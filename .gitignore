@@ -8,6 +8,7 @@ assets/
 x64/
 *.lib
 *vcxprog*
+*.cd
 
 # User-specific files
 *.rsuser
