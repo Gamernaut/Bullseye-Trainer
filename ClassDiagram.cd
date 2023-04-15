@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="cpv::Aircraft" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAIAAAgAAAAAAAAAAAAAIAAAAAAAAAAAgAgEAA=</HashCode>
+      <FileName>src\aircraft.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::AWACSManager" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEEAAAAAAAAAAAQAAIgAACEIAEAAAAAA=</HashCode>
+      <FileName>src\awacs_manager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::Bogey" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAgAAAAAAAAAAAAAoAAAYAEBAgAAgAAAKA=</HashCode>
+      <FileName>src\bogey.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::Bullseye" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIABAgAAGAAAAAIAAAAIAACBAAAAAAAgCIAgA=</HashCode>
+      <FileName>src\bullseye.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::Bulls_Trainer" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAABCQCAAAACBEAAAAAgAAAAABEAAAAEAKI=</HashCode>
+      <FileName>src\bulls_trainer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::DisplayManager" Collapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ECAAAAAAAAAAAACCAIAgAIAAABACAAAAAAICCAQAAAA=</HashCode>
+      <FileName>src\display_manager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::EnemyManager" Collapsed="true">
+    <Position X="9" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAACAAAAEgAAAAAAAQAAAAAgAAAAABAAAAAAAAA=</HashCode>
+      <FileName>src\enemy_manager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::HSD" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AcAAQIEAQAAAAgFEIAUDAEAAYAQQFECBJABAlMCqoIw=</HashCode>
+      <FileName>src\hsd.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::ImageObject" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAACgIEhAhQIIAQBBAACAQAgBQwAAAAEAAIAA=</HashCode>
+      <FileName>src\image_object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::MFD" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEECAAACAAACEAACAACAAAQAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>src\mfd.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::OnSceenButton" Collapsed="true">
+    <Position X="10.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ARAEAEAAIAQgAAABAAAghAIIAQAAAAAAAACAAEAAABA=</HashCode>
+      <FileName>src\on_screen_button.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::OptionsScreen" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EQAAEAAAAAAAAwAAAQAACQAIACABFACCAAAAgAQlAAA=</HashCode>
+      <FileName>src\options_screen.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::RoundManager" Collapsed="true">
+    <Position X="12.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAQAAAIAACCgAAAQCCIABgBgAAAACAAAACQEA=</HashCode>
+      <FileName>src\round_manager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::SettingsManager" Collapsed="true">
+    <Position X="9" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABIQACBAAAAAAAAAAAEAAABAEIAAJAAAABAAAAAAA=</HashCode>
+      <FileName>src\settings_manager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::StartScreen" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAgAAAAAIgIAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>src\start_screen.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cpv::TextObject" Collapsed="true">
+    <Position X="10.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEEQAAAAhgAAAAAAAAAAAAAAgAQAQIIAAAAAIA=</HashCode>
+      <FileName>src\text_object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="winreg::RegException" Collapsed="true">
+    <Position X="12.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\WinReg.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="winreg::RegResult" Collapsed="true">
+    <Position X="10.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAEAAAgAAgIBAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>src\WinReg.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="winreg::RegExpected&lt;T&gt;" Collapsed="true">
+    <Position X="14.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAIAAAAAAFAAgAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\WinReg.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="winreg::RegKey" Collapsed="true">
+    <Position X="9" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DnIKLIgAokAQKNJUNyhIACAgAoEAoWiIAKkgQICAIAE=</HashCode>
+      <FileName>src\WinReg.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="winreg::detail::ScopedLocalFree&lt;T&gt;" Collapsed="true">
+    <Position X="14.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAABEACAAAAAAAAAAAAAAEAAkAAAAAAI=</HashCode>
+      <FileName>src\WinReg.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="cpv::__unnamed_struct_04aa_1" Collapsed="true">
+    <Position X="1.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>src\constants.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="cpv::__unnamed_struct_04aa_2" Collapsed="true">
+    <Position X="6.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAEIAAAAgAA=</HashCode>
+      <FileName>src\constants.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="cpv::Coordinate" Collapsed="true">
+    <Position X="1.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\constants.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="cpv::BearingRangeAltitudeHeading" Collapsed="true">
+    <Position X="6.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\constants.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="cpv::GameState" Collapsed="true">
+    <Position X="12.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAUgAAAACAAAAAAAAAAAAgAAAAAAAAAAEAAIAAAA=</HashCode>
+      <FileName>src\game_enums.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="cpv::Difficulty" Collapsed="true">
+    <Position X="10.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIIAAAIAAAAAAAAAAAAAAQAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\game_enums.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="cpv::ButtonState" Collapsed="true">
+    <Position X="9" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>src\on_screen_button.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
