@@ -353,21 +353,17 @@ void HSD::AddPanelTextToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& g
 
     font_20_->DrawCenteredInWindow(sdl_renderer, "AWACS Call:", kMfdGreenColour, 30);
 
-    // TODO: Access the AWACS calls for each bogey. If 2 and 3 don't exist then they get an empty string
-    if (settings_manager_->GetGameDifficulty() == Difficulty::kRookie ||
-        settings_manager_->GetGameDifficulty() == Difficulty::kVeteran ||
-        settings_manager_->GetGameDifficulty() == Difficulty::kAce) {
-        font_16_->DrawCenteredInWindow(sdl_renderer, round_manager_->GenerateAwacsCallString(1), kMfdWhiteColour, 65);
-    }
 
+    // There will always be 1 bogey so display info on that
+    font_16_->DrawCenteredInWindow(sdl_renderer, round_manager_->GenerateAwacsCallString(1), kMfdWhiteColour, 65);
+
+    // If difficulty is set to Ace then there could be 1 or 2 more bogies
     if (settings_manager_->GetGameDifficulty() == Difficulty::kAce) {
         font_16_->DrawCenteredInWindow(sdl_renderer, round_manager_->GenerateAwacsCallString(2), kMfdWhiteColour, 85);
         font_16_->DrawCenteredInWindow(sdl_renderer, round_manager_->GenerateAwacsCallString(3), kMfdWhiteColour, 105);
     }
-
  
     // Display the text that describes what the player should do at each difficulty level
-
     if (settings_manager_->GetGameDifficulty() == Difficulty::kAce && (game_state == GameState::kRoundPlaying || game_state == GameState::kNewRound)) {
         difficulty_text1 = "Difficulty: ACE";
         difficulty_text2 = "Click on HSD close to each group of bogey's";
@@ -396,7 +392,7 @@ void HSD::AddPanelTextToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& g
 }
 
 // Uses round manager too access enemy manager to get the positions of the things that can be in different positions between rounds (i.e. bogies and bulls)
-void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_) {
+void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_) {
     PLOG_VERBOSE << "HSD::AddSensorDataToDrawQueue() called";
 
     // TODO: Implement display bulls in 3 higher levels but not in the 2 lower ones
@@ -415,7 +411,7 @@ void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState&
     // also we need to subtract the difference between the aircraft heading and the bulls bearing so made the heading negative.
     Coordinate aircraft_start = my_aircraft_->GetPosition();
     int bulls_bearing = reciprocate_heading(bullseye_->GetBearingFromBullseyeToMyAircraft());
-    int aircraft_heading = -my_aircraft_->GetHeading();
+    int aircraft_heading = -my_aircraft_->GetHeading();     // This has to be negative for the bullseye to be positioned properly
     double distance_to_bulls = static_cast<double>(bullseye_->GetRangeFromBullseyeToMyAircraft());
     double milesperpixel = GetMilesPerPixel();
 
@@ -433,8 +429,14 @@ void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState&
     //
     //////////////////////////
 
-    // How many bogies do we need to draw?
-    int bogey_count = round_manager_->enemy_manager_->GetBogieCount();
+    // TODO - change this so it only draws the appropriate number of bogies based on game difficulty
+    int bogey_count = 0;
+
+    if (settings_manager_->GetGameDifficulty() != Difficulty::kAce) {
+        bogey_count = 1;
+    } else {
+        bogey_count = round_manager_->enemy_manager_->GetBogieCount();
+    }
 
     // For each bogey, get the BRAH data, convert to screen position taking HSD scale and centered/non centered into account then set position and add to draw queue
     // Start count at 1 in case bogey count is 0 (as in easiest levels) of loop will always execute even with no bogies
@@ -443,8 +445,13 @@ void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState&
         // Bogey contains BRAA from bogey to bulls eye
         Bogey tempBogey = round_manager_->enemy_manager_->GetBogieAtVectorPosition(j - 1);
 
-        // Coordinate bogey_position = { 363 , 350 };
-        Coordinate bogey_position = calc_endpoint_given_start_bearing_and_range(bullseye_->GetPosition(), tempBogey.GetBearing(), 0, tempBogey.GetRange(), GetMilesPerPixel());
+        Coordinate bulls_start = bullseye_->GetPosition();
+        int bulls_bearing = tempBogey.GetBearing();
+        int aircraft_heading = -my_aircraft_->GetHeading();     // This was 0 in the original code
+        double bogey_range = static_cast<double>(tempBogey.GetRange());
+        double milesperpixel = GetMilesPerPixel();
+
+        Coordinate bogey_position = calc_endpoint_given_start_bearing_and_range(bulls_start, bulls_bearing, aircraft_heading, bogey_range, milesperpixel);
         bogey_trace_->SetUIPosition(bogey_position);
         bogey_trace_->Draw(sdl_renderer);
 
@@ -463,7 +470,7 @@ void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState&
         // % is used as the denominator as it's the minimum size so all larger sizes should be scaled as a multiple of 5.
         line_length = line_length * (GetHSDCurrentRange() / 5.0);
 
-        Coordinate line_end_point = calc_endpoint_given_start_bearing_and_range(bogey_position, tempBogey.GetHeading(), 0, line_length, GetMilesPerPixel());
+        Coordinate line_end_point = calc_endpoint_given_start_bearing_and_range(bogey_position, tempBogey.GetHeading(), -my_aircraft_->GetHeading(), line_length, GetMilesPerPixel());
 
         SDL_SetRenderDrawColor(sdl_renderer, 255, 255, 255, 255);
         SDL_RenderDrawLine(sdl_renderer, bogey_position.x, bogey_position.y, line_end_point.x, line_end_point.y);
@@ -477,7 +484,7 @@ void HSD::Draw(SDL_Renderer* sdl_renderer, const std::unique_ptr<RoundManager>& 
     // Draws all the static objects using their current states (ranges, angles etc)
     AddStaticUIElementsToDrawQueue(sdl_renderer, game_state, round_manager_);
     AddPanelTextToDrawQueue(sdl_renderer, game_state, round_manager_, settings_manager_);
-    AddDynamicDataToDrawQueue(sdl_renderer, game_state, round_manager_);
+    AddDynamicDataToDrawQueue(sdl_renderer, game_state, round_manager_, settings_manager_);
 
     // Outer MFD frame, calls method in MFD base class, centered in MFD by default so no need for SetUIPosition call. Drawn last so overwrites everything else
     DrawMFDFrame(sdl_renderer);

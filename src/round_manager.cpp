@@ -102,7 +102,7 @@ void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>& settings_m
         total_guesses_ = 3 * bogey_count_;
     }
     // Medium difficulty - just need to create 1 bogey and the guesses is already set as 3
-    else if (settings_manager_->GetGameDifficulty() == Difficulty::kVeteran || settings_manager_->GetGameDifficulty() == Difficulty::kRookie) {
+    else {
         enemy_manager_->CreateBogey(bogey_count_);
     }
 

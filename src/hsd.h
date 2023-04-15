@@ -82,7 +82,7 @@ namespace cpv {
 		// Main method(s) to draw the static text/images which comprise the instrumentation
 		void AddStaticUIElementsToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_);
 		// Main method(s) to draw the dynamic images to represent what the sensors see
-		void AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_);
+		void AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_);
 		// Adds the text to the AWACS panel at the top of the window
 		void AddPanelTextToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_);
 

@@ -13,25 +13,21 @@
 
 using namespace cpv;
 
-EnemyManager::EnemyManager()
-{
+EnemyManager::EnemyManager() {
     PLOG_VERBOSE << "EnemyManager constructor called";
 }
 
-EnemyManager::~EnemyManager()
-{
+EnemyManager::~EnemyManager() {
     PLOG_VERBOSE << "EnemyManager destructor called";
 }
 
-int EnemyManager::GetBogieCount()
-{
+int EnemyManager::GetBogieCount() {
     PLOG_VERBOSE << "EnemyManager::GetBogieCount() called.";
 
     return bogie_vector_.size();
 }
 
-void EnemyManager::CreateBogey(int bogey_count)
-{
+void EnemyManager::CreateBogey(int bogey_count) {
     PLOG_VERBOSE << "EnemyManager::CreateBogey() called";
 
     // Create a temporary bogey object on stack before adding to vector

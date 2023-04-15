@@ -41,6 +41,7 @@ void OptionsScreen::DrawStaticText(SDL_Renderer* sdl_renderer) {
     font_16_->Draw(sdl_renderer, "Click on a button to get a description.", kMfdWhiteColour, 189, 750);
     font_16_->Draw(sdl_renderer, "SELECT", kMfdWhiteColour, 254, 792);
     font_16_->Draw(sdl_renderer, "CANCEL", kMfdWhiteColour, 430, 792);
+    font_16_->Draw(sdl_renderer, "Contact: Gamernaut19@gmail.com", kMfdBlueColour, 210, 700);
 }
 
 void OptionsScreen::DrawRecruitText(SDL_Renderer* sdl_renderer)

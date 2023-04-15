@@ -41,6 +41,3 @@ int Aircraft::GetAltitude() const {
 
     return altitude_;
 }
-
-
-
