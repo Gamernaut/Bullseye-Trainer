@@ -11,6 +11,7 @@ x64/
 *.cd
 *.uxf
 Images/
+README.md
 
 # User-specific files
 *.rsuser
