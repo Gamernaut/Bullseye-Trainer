@@ -15,7 +15,7 @@ I'm a founding member of the 72nd Ghosts. Find out more here [72nd Ghosts Homepa
 - Use test cases to optimise how the data is stored and manipulated (game logic) before developing the UI
 
 ### Languages/Packages:
-- Visual Studio 2019
+- Visual Studio 2022
 - C++ 11 features (complied against C++20 standard)
 - [PLOG](https://github.com/SergiusTheBest/plog)
 - [SDL](https://www.libsdl.org/)
