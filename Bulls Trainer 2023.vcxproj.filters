@@ -122,9 +122,6 @@
     <ClInclude Include="src\text_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WinReg.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\settings_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>

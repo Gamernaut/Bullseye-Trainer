@@ -71,7 +71,7 @@ HSD::HSD(SDL_Renderer* sdl_renderer_, int mfd_top_edge, int mfd_left_edge, int m
         PLOG_ERROR << "HSD constructor: Could not create my_aircraft_";
     } else {
         // TODO: remove this else clause, but heading needs to be set from somewhere, probably round manager during new round creation. Change this value to change my aircraft heading
-        my_aircraft_->SetHeading(45);                                                                                // TESTING
+        my_aircraft_->SetHeading(90);                                                                                // TESTING
     }
 
     // Bullseye symbol

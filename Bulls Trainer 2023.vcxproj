@@ -57,7 +57,6 @@
     <ClInclude Include="src\settings_manager.h" />
     <ClInclude Include="src\start_screen.h" />
     <ClInclude Include="src\text_object.h" />
-    <ClInclude Include="src\WinReg.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -117,11 +116,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\Development\Projects\C++\3rd_party_SDKs\SDL2\include;D:\Development\Projects\C++\3rd_party_SDKs;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Development\Projects\C++\3rd_party_SDKs\WinReg-master\WinReg;D:\Development\Projects\C++\3rd_party_SDKs\SDL2\include;D:\Development\Projects\C++\3rd_party_SDKs;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Development\Projects\C++\3rd_party_SDKs\SDL2\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>D:\Development\Projects\C++\3rd_party_SDKs\SDL2\include;D:\Development\Projects\C++\3rd_party_SDKs;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Development\Projects\C++\3rd_party_SDKs\WinReg-master\WinReg;D:\Development\Projects\C++\3rd_party_SDKs\SDL2\include;D:\Development\Projects\C++\3rd_party_SDKs;$(IncludePath)</IncludePath>
     <LinkIncremental>
     </LinkIncremental>
   </PropertyGroup>
