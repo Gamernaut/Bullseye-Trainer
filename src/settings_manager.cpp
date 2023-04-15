@@ -18,11 +18,9 @@ SettingsManager::SettingsManager() {
 
 		bulls_trainer_key.Create(HKEY_CURRENT_USER, kRegEntry);
 		bulls_trainer_key.SetStringValue(kRegDifficulty, kDifficultyDefault);
-		// TODO - convert string to enum type and set difficultly level
-		// SetGameDifficulty(kDifficultyDefault);
+		SetGameDifficulty(Difficulty::kRecruit);
 		bulls_trainer_key.SetStringValue(kRegLogging, kLoggingDefault);
-		// TODO - convert string to enum type and set logging level
-		// SetLoggingLevel(kLoggingDefault);
+		SetLoggingLevel(2);
 	}
 	else {
 		PLOG_INFO << "SettingsManager::Constructor opened registry key";

@@ -13,11 +13,10 @@
 #ifndef CPV_SETTINGS_MANAGER_H_
 #define CPV_SETTINGS_MANAGER_H_
 
-// include core code
+// System includes
 
 
 // Include 3rd party code
-// TODO: Move this into the 3rd_party_SDKs folder
 #include "WinReg.hpp"
 
 // include my code
