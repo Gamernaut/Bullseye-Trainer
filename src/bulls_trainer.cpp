@@ -47,7 +47,7 @@ bool Bulls_Trainer::Initialise()  {
 		return false;
 	}
 
-	// Create the display mangaer and Initialise the graphics 
+	// Create the display manager and Initialise the graphics 
 	display_manager_ = std::make_unique<DisplayManager>();
 	if (!display_manager_) {
 		PLOG_ERROR << "Bulls_Trainer::Initialise() failed to create display_manager_ object";
@@ -274,7 +274,7 @@ void Bulls_Trainer::ProcessInput() {
 					mouse_click_position.y = mouseY;
 					PLOG_INFO << "HSD guess made -> Calling CheckGuessAgainstWinCondition()";
 					game_state = GameState::kRoundPlaying;
-					round_manager_->CheckGuessAgainstWinCondition(game_state, mouse_click_position);
+					round_manager_->CheckGuessAgainstWinCondition(game_state, mouse_click_position, settings_manager_);
 					break;
 				}
 

@@ -71,7 +71,7 @@ HSD::HSD(SDL_Renderer* sdl_renderer_, int mfd_top_edge, int mfd_left_edge, int m
         PLOG_ERROR << "HSD constructor: Could not create my_aircraft_";
     } else {
         // TODO: remove this else clause, but heading needs to be set from somewhere, probably round manager during new round creation. Change this value to change my aircraft heading
-        my_aircraft_->SetHeading(90);                                                                                // TESTING
+        my_aircraft_->SetHeading(0);                                                                                // TESTING
     }
 
     // Bullseye symbol
@@ -278,7 +278,7 @@ void HSD::AddStaticUIElementsToDrawQueue(SDL_Renderer* sdl_renderer, const GameS
         hsd_distance_rings_centered_->Draw(sdl_renderer);
 
         // Update OSB 2 to display CEN
-        font_18_->Draw(sdl_renderer, kCenButtonText, kMfdYellowColour, 183, 276);
+        font_18_->Draw(sdl_renderer, kCenButtonText, kMfdWhiteColour, 183, 276);
     }
     else {
         hsd_distance_rings_->SetUIPosition(distRingsCenterNoOffset);
@@ -290,7 +290,7 @@ void HSD::AddStaticUIElementsToDrawQueue(SDL_Renderer* sdl_renderer, const GameS
         hsd_distance_rings_->Draw(sdl_renderer);
 
         // Update OSB 2 to display DEP
-        font_18_->Draw(sdl_renderer, kDepButtonText, kMfdYellowColour, 183, 276);
+        font_18_->Draw(sdl_renderer, kDepButtonText, kMfdWhiteColour, 183, 276);
     }
 
     // As Aircraft position is set above just draw it now, don't need to duplicate code in the if statement as it's the same call
@@ -319,7 +319,7 @@ void HSD::AddStaticUIElementsToDrawQueue(SDL_Renderer* sdl_renderer, const GameS
     }
 
     // Add the range text
-    font_18_->DrawCenteredAt(sdl_renderer, std::to_string(GetHSDCurrentRange()), kMfdYellowColour, 104, 420);
+    font_18_->DrawCenteredAt(sdl_renderer, std::to_string(GetHSDCurrentRange()), kMfdWhiteColour, 104, 420);
 
     // Add Exit button text to the HSD
     font_16_->Draw(sdl_renderer, kExitButtonText, kMfdWhiteColour, 433, 795);
