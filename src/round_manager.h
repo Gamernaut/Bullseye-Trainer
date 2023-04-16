@@ -28,11 +28,6 @@
 #include "maths_functions.h"
 #include "bullseye.h"
 
-// TODO: need to include info from HSD in the functions which check for the correct guess but includes and forward declaration not working.
-// #include "display_manager.h"
-// #include "hsd.h"
-// class HSD;
-
 namespace cpv {
 
 	class RoundManager {
@@ -55,11 +50,11 @@ namespace cpv {
 
 	// Methods
 	protected:
-		void CheckRecruitWinStatus(GameState& state);
-		//void CheckCadetWinStatus(GameState& state, const std::unique_ptr<Bullseye>& bullseye_, const std::unique_ptr<HSD>& hsd_);
-		//void CheckRookieWinStatus(GameState& state, const std::unique_ptr<Bullseye>& bullseye_, const std::unique_ptr<HSD>& hsd_);
-		//void CheckVeteranWinStatus(GameState& state, const std::unique_ptr<Bullseye>& bullseye_, const std::unique_ptr<HSD>& hsd_);
-		//void CheckAceWinStatus(GameState& state, const std::unique_ptr<Bullseye>& bullseye_, const std::unique_ptr<HSD>& hsd_);
+		void CheckRecruitWinStatus(GameState& state, Coordinate aircraft_position, int bulls_bearing);
+		void CheckCadetWinStatus(GameState& state, Coordinate bullseye_position);
+		void CheckRookieWinStatus(GameState& state, Coordinate bullseye_position);
+		void CheckVeteranWinStatus(GameState& state, Coordinate bullseye_position, int bulls_bearing, int aircraft_heading, double milesperpixel);
+		void CheckAceWinStatus(GameState& state);
 		bool IsClickInRectAroundBulls();
 //		bool IsClickInRectAroundBogey(Aircraft* bogey1, Aircraft* bogey2);
 
@@ -68,7 +63,7 @@ namespace cpv {
 		RoundManager();
 		~RoundManager();
 		void SetupRound(const std::unique_ptr<SettingsManager>& settings_manager_);
-		void CheckGuessAgainstWinCondition(GameState& state, Coordinate mouse_click_position, const std::unique_ptr<SettingsManager>& settings_manager);
+		void CheckGuessAgainstWinCondition(GameState& state, Coordinate mouse_click_position, const std::unique_ptr<SettingsManager>& settings_manager, Coordinate bullseye_position, int bulls_bearing, Coordinate aircraft_position, int aircraft_heading, double milesperpixel);
 		int GetRemainingGuesses() const;
 		void ResetRound();
 		std::string GenerateAwacsCallString(int bogey_index);

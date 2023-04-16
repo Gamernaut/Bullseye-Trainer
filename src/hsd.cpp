@@ -233,18 +233,18 @@ double HSD::GetMilesPerPixel(void) const {
 }
 
 
-void HSD::RotateHsdRingsTo(int final_angle) {
-    PLOG_VERBOSE << "HSD::RotateHsdRingsTo() called";
+//void HSD::RotateHsdRingsTo(int final_angle) {
+//    PLOG_VERBOSE << "HSD::RotateHsdRingsTo() called";
+//
+//    // TODO: Implement RotateHsdRingsTo
+//}
 
-    // TODO: Implement RotateHsdRingsTo
-}
 
-
-void HSD::BearingPointerTo(int final_angle) {
-    PLOG_VERBOSE << "HSD::BearingPointerTo() called";
-
-    // TODO:  Implement BearingPointerTo
-}
+//void HSD::BearingPointerTo(int final_angle) {
+//    PLOG_VERBOSE << "HSD::BearingPointerTo() called";
+//
+//    // TODO:  Implement BearingPointerTo
+//}
 
 
 void HSD::DrawCorrectGuessArc(int user_bearing_guess) {

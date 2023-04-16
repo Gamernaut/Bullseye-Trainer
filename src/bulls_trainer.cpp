@@ -274,7 +274,12 @@ void Bulls_Trainer::ProcessInput() {
 					mouse_click_position.y = mouseY;
 					PLOG_INFO << "HSD guess made -> Calling CheckGuessAgainstWinCondition()";
 					game_state = GameState::kRoundPlaying;
-					round_manager_->CheckGuessAgainstWinCondition(game_state, mouse_click_position, settings_manager_);
+					Coordinate bulls_position = display_manager_->hsd_screen_->bullseye_->GetPosition();
+					Coordinate aircraft_position = display_manager_->hsd_screen_->my_aircraft_->GetPosition();
+					int bulls_bearing = display_manager_->hsd_screen_->bullseye_->GetBearingFromBullseyeToMyAircraft();
+					int aircraft_heading = display_manager_->hsd_screen_->my_aircraft_->GetHeading();
+					double milesperpixel = display_manager_->hsd_screen_->GetMilesPerPixel();
+					round_manager_->CheckGuessAgainstWinCondition(game_state, mouse_click_position, settings_manager_, bulls_position, bulls_bearing, aircraft_position, aircraft_heading, milesperpixel);
 					break;
 				}
 
@@ -327,7 +332,7 @@ void Bulls_Trainer::Render() {
 			display_manager_->RenderStartScreen();
 			break;
 		case GameState::kOptionsScreen:
-			display_manager_->RenderOptionsSceen(round_manager_, settings_manager_);
+			display_manager_->RenderOptionsSceen(settings_manager_);
 			break;
 		// All other Game_states are only relevant to the game screen so they are handled there
 		default:

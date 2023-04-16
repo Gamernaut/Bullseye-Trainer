@@ -17,9 +17,9 @@ SettingsManager::SettingsManager() {
 		PLOG_ERROR << "SettingsManager::Constructor failed to open registry key ";
 
 		bulls_trainer_key.Create(HKEY_CURRENT_USER, kRegEntry);
-		bulls_trainer_key.SetStringValue(kRegDifficulty, kDifficultyDefault);
+		bulls_trainer_key.SetStringValue(kRegDifficulty, L"Recruit");
 		SetGameDifficulty(Difficulty::kRecruit);
-		bulls_trainer_key.SetStringValue(kRegLogging, kLoggingDefault);
+		bulls_trainer_key.SetStringValue(kRegLogging, L"info");
 		SetLoggingLevel(2);
 	}
 	else {

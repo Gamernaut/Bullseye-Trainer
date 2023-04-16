@@ -60,8 +60,7 @@ namespace cpv {
 		void DrawRookieText(SDL_Renderer* sdl_renderer);
 		void DrawVeteranText(SDL_Renderer* sdl_renderer);
 		void DrawAceText(SDL_Renderer* sdl_renderer);
-		//void Draw(SDL_Renderer* sdl_renderer, const Difficulty& game_difficulty, const int logging_level);
-		void Draw(SDL_Renderer* sdl_renderer, const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_);
+		void Draw(SDL_Renderer* sdl_renderer, const std::unique_ptr<SettingsManager>& settings_manager_);
 		void DrawStaticText(SDL_Renderer* sdl_renderer);
 	};
 }

@@ -114,15 +114,14 @@ void DisplayManager::RenderStartScreen()
 }
 
 
-//void DisplayManager::RenderOptionsSceen(const Difficulty& game_difficulty, const int logging_level) const {
-void DisplayManager::RenderOptionsSceen(const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_) const {
+void DisplayManager::RenderOptionsSceen(const std::unique_ptr<SettingsManager>& settings_manager_) const {
 	PLOG_VERBOSE << "DisplayManager:RenderOptionsSceen() called";
 
 	// options_screen_->Draw(sdl_renderer_);
 	SDL_SetRenderDrawColor(sdl_renderer_, 0, 0, 0, 255);
 	SDL_RenderClear(sdl_renderer_);
 
-	options_screen_->Draw(sdl_renderer_, round_manager_, settings_manager_);
+	options_screen_->Draw(sdl_renderer_, settings_manager_);
 	SDL_RenderPresent(sdl_renderer_);
 }
 

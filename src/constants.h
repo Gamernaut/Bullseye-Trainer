@@ -50,9 +50,7 @@ namespace cpv {
 	// Registry string for accessing registry entires
 	inline const std::wstring kRegEntry = L"SOFTWARE\\Bulls_Trainer";
 	inline const std::wstring kRegDifficulty = L"Bulls_Trainer_Difficulty";
-	inline const std::wstring kDifficultyDefault = L"Recruit";
 	inline const std::wstring kRegLogging = L"Bulls_Trainer_Logging";
-	inline const std::wstring kLoggingDefault = L"info";
 
 	// These are used by the "game loop" to determine how often to draw the screen, FPS not critical in this program
 	const int kFPS = 10;

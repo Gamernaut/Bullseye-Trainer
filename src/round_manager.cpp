@@ -32,72 +32,112 @@ RoundManager::RoundManager() {
 RoundManager::~RoundManager()
 {
     PLOG_VERBOSE << "RoundManager destructor called";
-
-    // TODO: Implement RoundManager
+#
+    // TODO: Implement ~RoundManager
 }
 
-void RoundManager::CheckRecruitWinStatus(GameState& state) {
-    PLOG_VERBOSE << "RoundManager::CheckRecruitWinStatus() called";
-
-    // TODO    1 - Implement CheckRecruitWinStatus
+void RoundManager::CheckRecruitWinStatus(GameState& state, Coordinate aircraft_position, int bulls_bearing) {
     // Win condition is to correctly identify the bearing of the bullseye from the aircraft (within a cone 30 deg wide, +/- 15 deg of the point clicked on)
 
-    //// Calculate the actual and user guessed bearing
-    //int actual_bearing = bullseye_->GetHeading();
-    //int user_bearing_guess = angle_between_point_a_and_b(hsd_->my_aircraft_->GetPosition(), mouse_click_pos_);
+    PLOG_VERBOSE << "RoundManager::CheckRecruitWinStatus() called";
 
-    //// set State to win if the bearing is within acceptable win condition
-    //if (user_bearing_guess >= (actual_bearing - 15) && user_bearing_guess <= (actual_bearing + 15)) {
-    //    // Set the game state so the HSD Draw method can display the guess
-    //    state = GameState::kRoundWon;
-    //}
-    //// set State to playing if not correct and not last guess
-    //else if (current_guess_ < total_guesses_) {
-    //    // Set the game state so the HSD Draw method can display the guess
-    //    state = GameState::kRoundPlaying;
-    //    std::cout << "Keep going Recruit" << std::endl;
-    //}
-    //// set State to fail if this is the last guess and it's wrong
-    //else {
-    //    // Set the game state so the HSD Draw method can display the guess
-    //    state = GameState::kRoundFail;
-    //    std::cout << "Better luck next time Recruit" << std::endl;
-    //}
+    // Calculate the user guessed bearing
+    int user_bearing_guess = angle_between_point_a_and_b(mouse_click_pos_, aircraft_position);
+
+    if (user_bearing_guess >= (bulls_bearing - 15) && user_bearing_guess <= (bulls_bearing + 15)) {
+        // Player has picked a direction that is within +/- 15 deg of the actual direction
+        state = GameState::kRoundWon;
+    } else if (current_guess_ < total_guesses_) {
+        // player didn't pick correct direction but still has some turns left
+        state = GameState::kRoundPlaying;
+        // Display message to Recruit to keep trying
+    } else {
+        // Player has run out of turns so the round ends
+        state = GameState::kRoundFail;
+        // Display "Better luck next time Recruit" 
+    }
 }
-//
-//void RoundManager::CheckCadetWinStatus(GameState& state, const std::unique_ptr<Bullseye>& bullseye_, const std::unique_ptr<HSD>& hsd_)
-//{
-//    PLOG_VERBOSE << "RoundManager::CheckCadetWinStatus() called";
-//
-//    // TODO    2- Implement CheckCadetWinStatus
-//}
-//
-//void RoundManager::CheckRookieWinStatus(GameState& state, const std::unique_ptr<Bullseye>& bullseye_, const std::unique_ptr<HSD>& hsd_)
-//{
-//    PLOG_VERBOSE << "RoundManager::CheckRookieWinStatus() called";
-//
-//    // TODO    3- Implement CheckRookieWinStatus
-//}
-//
-//void RoundManager::CheckVeteranWinStatus(GameState& state, const std::unique_ptr<Bullseye>& bullseye_, const std::unique_ptr<HSD>& hsd_)
-//{
-//    PLOG_VERBOSE << "RoundManager::CheckVeteranWinStatus() called";
-//
-//    // TODO    4 - Implement CheckVeteranWinStatus
-//}
-//
-//void RoundManager::CheckAceWinStatus(GameState& state, const std::unique_ptr<Bullseye>& bullseye_, const std::unique_ptr<HSD>& hsd_)
-//{
-//    PLOG_VERBOSE << "RoundManager::CheckAceWinStatus() called";
-//
-//    // TODO    5 - Implement CheckAceWinStatus
-//}
-//
-//bool RoundManager::IsClickInRectAroundBulls()
-//{
-//    PLOG_VERBOSE << "RoundManager::IsClickInRectAroundBulls() called";
-//    return false;   // TODO: Update to actual code, this may give unexpected behaviour
-//}
+
+
+void RoundManager::CheckCadetWinStatus(GameState& state, Coordinate bullseye_position) {
+    // Win condition is to correctly identify the position of the bullseye within the size of the bulls eye (30 x 30 pixels)
+
+    PLOG_VERBOSE << "RoundManager::CheckCadetWinStatus() called";
+
+    int x_difference = bullseye_position.x - mouse_click_position.x;
+    int y_difference = bullseye_position.y - mouse_click_position.y;
+
+    if (x_difference <= 15 && x_difference >= -15 && y_difference <= 15 && y_difference >= -15) {
+        // Player has picked the location of the bulls eye so set game state to display the green box over the bullseye
+        state = GameState::kRoundWon;
+    } else if (current_guess_ < total_guesses_) {
+        // player didn't pick correct location but still has some turns left
+        state = GameState::kRoundPlaying;
+        // Display message to Cadet to keep trying
+    } else {
+        // Player has run out of turns so the round ends
+        state = GameState::kRoundFail;
+        // Display "Better luck next time Cadet" 
+    }
+}
+ 
+
+void RoundManager::CheckRookieWinStatus(GameState& state, Coordinate bullseye_position) {
+    // Win condition is to correctly identify the bearing from the bullseye to the bogey within +/- 15 deg of actual.
+
+    PLOG_VERBOSE << "RoundManager::CheckRookieWinStatus() called";
+
+    // Get the bearing from bulls to the bogey (will only be 1 bogey at this difficulty level)
+    int bulls_heading_to_bogey = enemy_manager_->GetBogieAtVectorPosition(0).GetBearing();
+    int user_bearing_guess = angle_between_point_a_and_b(bullseye_position, mouse_click_pos_);
+
+    if (user_bearing_guess >= (bulls_heading_to_bogey - 15) && user_bearing_guess <= (bulls_heading_to_bogey + 15)) {
+        // Player has picked a direction that is within +/- 15 deg of the actual direction
+        state = GameState::kRoundWon;
+    } else if (current_guess_ < total_guesses_) {
+        // player didn't pick correct direction but still has some turns left
+        state = GameState::kRoundPlaying;
+        // Display message to Rookie to keep trying
+    } else {
+        // Player has run out of turns so the round ends
+        state = GameState::kRoundFail;
+        // Display "Better luck next time Rookie" 
+    }
+}
+
+
+void RoundManager::CheckVeteranWinStatus(GameState& state, Coordinate bullseye_position, int bulls_bearing, int aircraft_heading, double milesperpixel) {
+    // Win condition is to correctly identify the position of the bogey within 30 x 30 pixels of the center of the bogey
+
+    PLOG_VERBOSE << "RoundManager::CheckVeteranWinStatus() called";
+
+    double  bogey_range = static_cast<double>(enemy_manager_->GetBogieAtVectorPosition(0).GetRange());
+    Coordinate bogey_position = calc_endpoint_given_start_bearing_and_range(bullseye_position, bulls_bearing, aircraft_heading, bogey_range, milesperpixel);
+
+    int x_difference = bogey_position.x - mouse_click_position.x;
+    int y_difference = bogey_position.y - mouse_click_position.y;
+
+    if (x_difference <= 15 && x_difference >= -15 && y_difference <= 15 && y_difference >= -15) {
+        // Player has picked the location of the bulls eye so set game state to display the green box over the bullseye
+        state = GameState::kRoundWon;
+    }
+    else if (current_guess_ < total_guesses_) {
+        // player didn't pick correct location but still has some turns left
+        state = GameState::kRoundPlaying;
+        // Display message to Veteran to keep trying
+    } else {
+        // Player has run out of turns so the round ends
+        state = GameState::kRoundFail;
+        // Display "Better luck next time Veteran" 
+    }
+}
+
+
+void RoundManager::CheckAceWinStatus(GameState& state) {
+    PLOG_VERBOSE << "RoundManager::CheckAceWinStatus() called";
+
+    // TODO    1 - Implement CheckAceWinStatus
+}
 
 
 void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>& settings_manager_) {
@@ -132,7 +172,7 @@ void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>& settings_m
     // Might need to pass the HSD reference to this object so we can set the values from here
 }
 
-void RoundManager::CheckGuessAgainstWinCondition(GameState& state, Coordinate mouse_click_position, const std::unique_ptr<SettingsManager>& settings_manager) {
+void RoundManager::CheckGuessAgainstWinCondition(GameState& state, Coordinate mouse_click_position, const std::unique_ptr<SettingsManager>& settings_manager, Coordinate bullseye_position, int bulls_bearing, Coordinate aircraft_position, int aircraft_heading, double milesperpixel) {
     
     PLOG_VERBOSE << "RoundManager::CheckGuessAgainstWinCondition() called";
 
@@ -144,15 +184,15 @@ void RoundManager::CheckGuessAgainstWinCondition(GameState& state, Coordinate mo
         // Check the win condition for this round based on level of difficulty
         switch (settings_manager->GetGameDifficulty()) {
             case Difficulty::kRecruit:
-                CheckRecruitWinStatus(state);
-            //case Difficulty::kRookie:
-            //    CheckRookieWinStatus(state, bullseye);
-            //case Difficulty::kCadet:
-            //    CheckCadetWinStatus(state, bullseye);
-            //case Difficulty::kVeteran:
-            //    CheckVeteranWinStatus(state, bullseye);
-            //case Difficulty::kAce:
-            //    CheckAceWinStatus(state, bullseye);
+                CheckRecruitWinStatus(state, aircraft_position, bulls_bearing);
+            case Difficulty::kCadet:
+                CheckCadetWinStatus(state, bullseye_position);
+            case Difficulty::kRookie:
+                CheckRookieWinStatus(state, bullseye_position);
+            case Difficulty::kVeteran:
+                CheckVeteranWinStatus(state, bullseye_position, bulls_bearing, aircraft_heading, milesperpixel);
+            case Difficulty::kAce:
+                CheckAceWinStatus(state);
          }
 
     }

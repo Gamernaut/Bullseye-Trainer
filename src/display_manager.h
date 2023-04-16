@@ -49,7 +49,8 @@ namespace cpv {
         ~DisplayManager();
         void RenderStartScreen();
  //       void RenderOptionsSceen(const Difficulty& game_difficulty, const int logging_level) const;
-        void RenderOptionsSceen(const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_) const;
+        //void RenderOptionsSceen(const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_) const; 
+        void RenderOptionsSceen(const std::unique_ptr<SettingsManager>& settings_manager_) const;
         void RenderGameScreen(const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& setting_manager_) const;
         bool InitialiseSDL();
         bool CreateScreens();

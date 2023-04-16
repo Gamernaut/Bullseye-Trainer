@@ -41,7 +41,8 @@ void OptionsScreen::DrawStaticText(SDL_Renderer* sdl_renderer) {
     font_16_->Draw(sdl_renderer, "Click on a button to get a description.", kMfdWhiteColour, 189, 750);
     font_16_->Draw(sdl_renderer, "SELECT", kMfdWhiteColour, 254, 792);
     font_16_->Draw(sdl_renderer, "CANCEL", kMfdWhiteColour, 430, 792);
-    font_16_->Draw(sdl_renderer, "Contact: Gamernaut19@gmail.com", kMfdBlueColour, 210, 700);
+    font_16_->Draw(sdl_renderer, "Contact: Gamernaut19@gmail.com", kMfdBlueColour, 210, 690);
+    font_16_->Draw(sdl_renderer, "Version: 0.1a", kMfdBlueColour, 300, 710);
 }
 
 void OptionsScreen::DrawRecruitText(SDL_Renderer* sdl_renderer)
@@ -120,8 +121,7 @@ void OptionsScreen::DrawAceText(SDL_Renderer* sdl_renderer)
     font_16_->Draw(sdl_renderer, "distance to the bogey's.", kMfdWhiteColour, 190, 620);
 }
 
-//void OptionsScreen::Draw(SDL_Renderer* sdl_renderer, const Difficulty& game_difficulty, const int logging_level) {
-void OptionsScreen::Draw(SDL_Renderer * sdl_renderer, const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_) {
+void OptionsScreen::Draw(SDL_Renderer * sdl_renderer, const std::unique_ptr<SettingsManager>&settings_manager_) {
     DrawStaticText(sdl_renderer);
 
     // Draw the correct text for the appropriate difficulty and logging level

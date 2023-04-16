@@ -22,8 +22,9 @@ namespace cpv {
 	class Bogey {
 	// Attributes
 	private:
-		// BRA from the bogie to the bullseye
+		// BRA from the bogey to the bullseye
 		BearingRangeAltitudeHeading brah_bogie_to_bulls_{ 0 , 0 , 0 , 0 };
+		Coordinate bogey_position_{ 100,100 };
 
 	protected:
 
