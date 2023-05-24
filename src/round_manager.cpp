@@ -136,7 +136,7 @@ void RoundManager::CheckVeteranWinStatus(GameState& state, Coordinate bullseye_p
 void RoundManager::CheckAceWinStatus(GameState& state) {
     PLOG_VERBOSE << "RoundManager::CheckAceWinStatus() called";
 
-    // TODO    1 - Implement CheckAceWinStatus
+    // TODO - Implement CheckAceWinStatus with multi win conditions
 }
 
 

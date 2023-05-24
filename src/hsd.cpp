@@ -478,6 +478,11 @@ void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState&
 }
 
 
+void HSD::AddGuessResultGraphicsToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_) {
+    // TODO 1 - implement AddGuessResultGraphicsToDrawQueue
+
+}
+
 void HSD::Draw(SDL_Renderer* sdl_renderer, const std::unique_ptr<RoundManager>& round_manager_, const GameState& game_state, const std::unique_ptr<SettingsManager>& settings_manager_)  {
     PLOG_VERBOSE << "HSD::Draw(std::unique_ptr<EnemyManager>& enemy_manager_) called";
     
@@ -485,6 +490,7 @@ void HSD::Draw(SDL_Renderer* sdl_renderer, const std::unique_ptr<RoundManager>& 
     AddStaticUIElementsToDrawQueue(sdl_renderer, game_state, round_manager_);
     AddPanelTextToDrawQueue(sdl_renderer, game_state, round_manager_, settings_manager_);
     AddDynamicDataToDrawQueue(sdl_renderer, game_state, round_manager_, settings_manager_);
+    AddGuessResultGraphicsToDrawQueue(sdl_renderer, game_state, round_manager_, settings_manager_);
 
     // Outer MFD frame, calls method in MFD base class, centered in MFD by default so no need for SetUIPosition call. Drawn last so overwrites everything else
     DrawMFDFrame(sdl_renderer);
