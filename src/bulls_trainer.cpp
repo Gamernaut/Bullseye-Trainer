@@ -279,6 +279,7 @@ void Bulls_Trainer::ProcessInput() {
 					int bulls_bearing = display_manager_->hsd_screen_->bullseye_->GetBearingFromBullseyeToMyAircraft();
 					int aircraft_heading = display_manager_->hsd_screen_->my_aircraft_->GetHeading();
 					double milesperpixel = display_manager_->hsd_screen_->GetMilesPerPixel();
+					display_manager_->hsd_screen_->SetMouseClickPosition(mouseX, mouseY);
 					round_manager_->CheckGuessAgainstWinCondition(game_state, mouse_click_position, settings_manager_, bulls_position, bulls_bearing, aircraft_position, aircraft_heading, milesperpixel);
 					break;
 				}

@@ -32,7 +32,7 @@ SettingsManager::~SettingsManager() {
 }
 
 
-// TODO add return value to check if it worked.
+// TODO: Add return value to check if it worked.
 void SettingsManager::WriteSettingsToRegistry() {
 	PLOG_VERBOSE << "SettingsManager::WriteSettingsToRegistry() called";
 

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bulls Trainer 2023", "Bulls Trainer 2023.vcxproj", "{CD4FB5F8-EE41-4F5C-8E24-6892FC5DE6D1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Google_Test", "Google_Test\Google_Test.vcxproj", "{855C24D0-CBE8-404A-A0C1-A76F47639327}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{CD4FB5F8-EE41-4F5C-8E24-6892FC5DE6D1}.Release|x64.Build.0 = Release|x64
 		{CD4FB5F8-EE41-4F5C-8E24-6892FC5DE6D1}.Release|x86.ActiveCfg = Release|Win32
 		{CD4FB5F8-EE41-4F5C-8E24-6892FC5DE6D1}.Release|x86.Build.0 = Release|Win32
+		{855C24D0-CBE8-404A-A0C1-A76F47639327}.Debug|x64.ActiveCfg = Debug|x64
+		{855C24D0-CBE8-404A-A0C1-A76F47639327}.Debug|x64.Build.0 = Debug|x64
+		{855C24D0-CBE8-404A-A0C1-A76F47639327}.Debug|x86.ActiveCfg = Debug|Win32
+		{855C24D0-CBE8-404A-A0C1-A76F47639327}.Debug|x86.Build.0 = Debug|Win32
+		{855C24D0-CBE8-404A-A0C1-A76F47639327}.Release|x64.ActiveCfg = Release|x64
+		{855C24D0-CBE8-404A-A0C1-A76F47639327}.Release|x64.Build.0 = Release|x64
+		{855C24D0-CBE8-404A-A0C1-A76F47639327}.Release|x86.ActiveCfg = Release|Win32
+		{855C24D0-CBE8-404A-A0C1-A76F47639327}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

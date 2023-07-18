@@ -41,6 +41,8 @@ namespace cpv {
 
 
 	inline int angle_between_point_a_and_b(Coordinate point1, Coordinate point2) {
+		// Remember that screen co-ordinates increase down the screen.
+
 		// We'll be using the difference in x1,y1 and x2,y2 coordinates
 		// we can use the atan2(y,x) function where y = y2 - y1 and x = x2 - x1 where x1,y1 is the starting point
 		// However, this function can return a negative value when x < 0 so need to adapt formula to give a result between 0 and 359 deg
@@ -55,8 +57,10 @@ namespace cpv {
 		double theta = 0.0;
 
 		theta = atan2(x2 - x1, y1 - y2);
-		if (theta < 0.0)
+		if (theta < 0.0) {
 			theta += kTwoPi;
+		}
+
 		return static_cast<int>(kRad2Deg * theta);
 	}
 

@@ -72,6 +72,23 @@ void ImageObject::DrawArc(SDL_Renderer* renderer, int user_bearing_guess) {
     PLOG_VERBOSE << "ImageObject::DrawArc() called";
 
     // TODO: Implement DrawArc
+    // Need to center the middle of the bottom of the image in the center of the aircraft.
+    // then rotate the image to match the bearing the user selected with the center of the
+    // pie slice aligning with the point the user clicked on.
+
+    // Non matrix maths for rotating around an arbitary point https://academo.org/demos/rotation-about-point/
+
+    int top_left_corner_x = 359 - (image_width_ / 2);
+    int top_left_corner_y = 667 - (image_height_ / 2);
+
+    SDL_Rect imageDestinationRectangle = { top_left_corner_x, top_left_corner_y, image_width_, image_height_ };
+
+    RotateToFinalAngle(user_bearing_guess);
+
+    int renderSuccess = SDL_RenderCopyEx(renderer, image_texture_, NULL, &imageDestinationRectangle, rotation_angle_, NULL, SDL_FLIP_NONE);
+    if (renderSuccess != 0) {
+        std::cout << "SDL_RenderCopy returned " << SDL_GetError() << "in ImageObject::Draw()" << std::endl;
+    }
 }
 
 void ImageObject::DrawArc2(SDL_Renderer* renderer, int user_bearing_guess, Coordinate aircraft_center) {

@@ -15,8 +15,6 @@
 #include <plog/Log.h>
 #include "plog/Initializers/RollingFileInitializer.h"
 
-
-
 // Add C runtime library (CRT) support for memory leak checking
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>

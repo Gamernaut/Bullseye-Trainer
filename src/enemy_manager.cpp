@@ -76,6 +76,6 @@ Bogey EnemyManager::GetBogieAtVectorPosition(int bogieIndex) {
 }
 
 void EnemyManager::DeleteBogies() {
-
+    bogie_vector_.clear();
 }
 

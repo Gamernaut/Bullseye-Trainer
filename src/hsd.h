@@ -71,6 +71,9 @@ namespace cpv {
 		std::unique_ptr<ImageObject> correct_guess_rect_;
 		std::unique_ptr<ImageObject> wrong_guess_rect_;
 
+		// Used to hold the position of the mouse click
+		Coordinate mouse_click_position{};
+
 	public:
 		std::unique_ptr<Aircraft> my_aircraft_ = nullptr;
 		std::unique_ptr<Bullseye> bullseye_ = nullptr;
@@ -108,9 +111,10 @@ namespace cpv {
 		//void Draw(SDL_Renderer* renderer, std::unique_ptr<Bullseye>& bullseye, std::unique_ptr<Aircraft>& bogey1, std::string const& bogey_1_awacs, std::unique_ptr<Aircraft>& bogey2, std::string bogey_2_awacs, std::unique_ptr<Aircraft>& bogey3, std::string bogey_3_awacs, int remaining_guesses);
 //		void Draw(SDL_Renderer* renderer, std::unique_ptr<Bullseye>& bullseye, std::unique_ptr<Aircraft>& bogey1, std::unique_ptr<Aircraft>& bogey2, std::unique_ptr<Aircraft>& bogey3, int remaining_guesses, const Difficulty& level, GameState& state, Coordinate mouse_click_position);
 		void Draw(SDL_Renderer* sdl_renderer, const std::unique_ptr<RoundManager>& round_manager_, const GameState& game_state, const std::unique_ptr<SettingsManager>& settings_manager_) ;
-		void DrawCorrectGuessArc(int user_bearing_guess);
-		void DrawWrongGuessArc(int user_bearing_guess);
-		
+		void DrawGuessArc(SDL_Renderer* sdl_renderer, int user_bearing_guess, bool guess_status);
+		void DrawGuessRect(SDL_Renderer* sdl_renderer, int user_bearing_guess, bool guess_status);
+		void SetMouseClickPosition(int x, int y);
+		Coordinate GetMouseClickPosition();
 	};
 }
 

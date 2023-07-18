@@ -136,14 +136,14 @@ void RoundManager::CheckVeteranWinStatus(GameState& state, Coordinate bullseye_p
 void RoundManager::CheckAceWinStatus(GameState& state) {
     PLOG_VERBOSE << "RoundManager::CheckAceWinStatus() called";
 
-    // TODO - Implement CheckAceWinStatus with multi win conditions
+    // TODO: Implement CheckAceWinStatus with multi win conditions
 }
 
 
 void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>& settings_manager_) {
     PLOG_VERBOSE << "RoundManager::SetupRound() called";
 
-    // TODO - should this be in round_manager or bulls_trainer?
+    // TODO: Should this be in round_manager or bulls_trainer?
     settings_manager_->ReadSettingsFromRegistry();
 
     // Clear any previous bogies as this should only get called when anew round starts
@@ -168,7 +168,7 @@ void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>& settings_m
         enemy_manager_->CreateBogey(bogey_count_);
     }
 
-    // TODO: set the F16 heading and the bulls position here
+    // TODO: Set the F16 heading and the bulls position here
     // Might need to pass the HSD reference to this object so we can set the values from here
 }
 
@@ -176,35 +176,48 @@ void RoundManager::CheckGuessAgainstWinCondition(GameState& state, Coordinate mo
     
     PLOG_VERBOSE << "RoundManager::CheckGuessAgainstWinCondition() called";
 
-    current_guess_ += 1;
-
     mouse_click_pos_ = mouse_click_position;
+    IncreaseGuessCount();
 
-    if (current_guess_ <= total_guesses_) {
+    if (GetRemainingGuesses() > 0) {
         // Check the win condition for this round based on level of difficulty
         switch (settings_manager->GetGameDifficulty()) {
             case Difficulty::kRecruit:
                 CheckRecruitWinStatus(state, aircraft_position, bulls_bearing);
+                break;
             case Difficulty::kCadet:
                 CheckCadetWinStatus(state, bullseye_position);
+                break;
             case Difficulty::kRookie:
                 CheckRookieWinStatus(state, bullseye_position);
+                break;
             case Difficulty::kVeteran:
                 CheckVeteranWinStatus(state, bullseye_position, bulls_bearing, aircraft_heading, milesperpixel);
+                break;
             case Difficulty::kAce:
                 CheckAceWinStatus(state);
          }
 
+    } else {
+        // No guesses remaining
+        // TODO: check how we clean up at the end of a round. Probably want to pause to allow the user to restart etc.
+        state = GameState::kGameEnded;
     }
-
 }
 
 int RoundManager::GetRemainingGuesses() const
 {
     PLOG_VERBOSE << "RoundManager::GetRemaingGuesses() called";
-    return total_guesses_;
+    return total_guesses_ - current_guess_;
 }
 
+void RoundManager::IncreaseGuessCount(){
+    PLOG_VERBOSE << "RoundManager::DecreaseRemainingGuesses() called";
+    current_guess_ += 1;
+}
+
+
+// TODO: This needs to be called from the main event loop where a player comes out of the setup screeen has has chnaged the difficulty level. 
 void RoundManager::ResetRound() {
     PLOG_VERBOSE << "RoundManager::ResetRound() called";
 
