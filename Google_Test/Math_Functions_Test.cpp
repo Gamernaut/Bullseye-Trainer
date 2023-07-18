@@ -150,5 +150,7 @@ TEST(MathsFunction, angle_between_point_a_and_b_case_8) {
 // as the first co-ordinate in initial tests. 
 
 TEST(MathsFunction, calc_endpoint_given_start_bearing_and_range_case_1) {
+    // Following fails to compile, possible problem with return type from function
+ 
 //    EXPECT_EQ(calc_endpoint_given_start_bearing_and_range(Coordinate(363, 667), 0, 0, 30, 0.5), Coordinate(363, 667));
 }

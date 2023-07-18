@@ -72,8 +72,24 @@ namespace cpv {
 	//	return static_cast<int>(pixel_distance * GetMilesPerPixel());
 	//}
 
-
-	// start_point - x,y coordinate to use a starting point
+	///////////////////////////////////////////////////////////////////////////
+	// 
+	// The main function to work out the screen co-ordinate of an object given various parameters such as distance, bearing, screen range etc
+	// 
+	///////////////////////////////////////////////////////////////////////////
+	
+	  
+	///////////////////////////////////////////////////////////////////////////
+	// Input parameters
+	//		start_point - x,y coordinate to use a starting point. This is usually my aircraft or the bullseye but can be any screen position
+	//		bearing_from_start_point - this is the direction from my aircraft to the object (typically the bulleye or bogey)
+	//		my_aircraft_current_heading - we need to account for the heading of my aircraft as I may not be pointing North (0 deg)
+	//		distance_in_miles - the distance to the object in the game world
+	//		miles_per_pixel - depending on the range setting on the MFD the number of in game miles a pixel repre4sents chnages. This
+	//						  is the ratio at the current range
+	// 
+	// Returns
+	//		A coordinate which is the center of the object at the given distance, bearing etc.
 	// 
 	// 
 	// Bit of trigonometry to work out the end co-ordinates based on the relative headings.
