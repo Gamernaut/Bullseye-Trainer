@@ -27,18 +27,23 @@ namespace cpv {
 // These custom data types hold info about absolute (Coordinate) and relative (BearingRangeAltitude) positions of objects in the program
 ////////////////////////////////////////
 
-	typedef struct {
+	struct Coordinate {
 		int x;
 		int y;
-	} Coordinate;
+
+		// To support the Google_Test EXPECT_EQ test we need to overload the "==" operator so the comparison is done correctly
+		bool operator==(const Coordinate& c) const {
+			return (x == c.x && y == c.y);
+		}
+	};
 
 	// Data type to hold the Bearing, Range/distance, Altitude and Aspect/Heading (BRAA) of an aircraft in relation to a defined point, such as the bullseye or players aircraft
-	typedef struct {
+	struct BearingRangeAltitudeHeading {
 		int bearing_in_degrees;
 		int distance_in_miles;
 		int altitude_in_angels;
 		int heading_in_degrees;		// Is actually treated as the heading of the aircraft, not the aspect
-	} BearingRangeAltitudeHeading;
+	};
 
 ////////////////////////////////////////
 // Environment setup parameters

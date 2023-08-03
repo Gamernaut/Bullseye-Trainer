@@ -43,10 +43,16 @@
     <Import Project="..\BullsTrainer_PropertySheet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>D:\Development\Projects\C++\3rd_party_SDKs\SDL2\include;D:\Development\Projects\C++\3rd_party_SDKs;D:\Development\Projects\C++\3rd_party_SDKs\WinReg-master\WinReg;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Development\Projects\C++\3rd_party_SDKs\SDL2\lib\x86;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy_Manager_Test.cpp" />
     <ClCompile Include="Math_Functions_Test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -77,10 +83,12 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>D:\Development\Projects\C++\3rd_party_SDKs\SDL2\include;D:\Development\Projects\C++\3rd_party_SDKs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;Shell32.lib;..\Debug\enemy_manager.obj;D:\Development\Projects\C++\Bulls Trainer 2023\Debug\bogey.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

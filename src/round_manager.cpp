@@ -41,10 +41,11 @@ void RoundManager::CheckRecruitWinStatus(GameState& state, Coordinate aircraft_p
 
     PLOG_VERBOSE << "RoundManager::CheckRecruitWinStatus() called";
 
-    // Calculate the user guessed bearing
-    int user_bearing_guess = angle_between_point_a_and_b(mouse_click_pos_, aircraft_position);
+    // Calculate the user guessed bearing (the order is important)
+    int user_bearing_guess = angle_between_point_a_and_b(aircraft_position, mouse_click_pos_);
 
-    if (user_bearing_guess >= (bulls_bearing - 15) && user_bearing_guess <= (bulls_bearing + 15)) {
+    // This needs to handle 360/0 as well
+    if ((user_bearing_guess >= (bulls_bearing - 15) || user_bearing_guess >= (360 - 15)) && (user_bearing_guess <= (bulls_bearing + 15) || user_bearing_guess >= (0 + 15)) ) {
         // Player has picked a direction that is within +/- 15 deg of the actual direction
         state = GameState::kRoundWon;
     } else if (current_guess_ < total_guesses_) {

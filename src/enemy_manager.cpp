@@ -30,8 +30,10 @@ int EnemyManager::GetBogieCount() {
 void EnemyManager::CreateBogey(int bogey_count) {
     PLOG_VERBOSE << "EnemyManager::CreateBogey() called";
 
-    // Create a temporary bogey object on stack before adding to vector
+    // Create a temporary bogey object on stack before copying to vector (original is not added to the vector)
     Bogey tempBogey;
+
+    if (bogey_count > 3) bogey_count = 3;
 
     if (bogey_count > 0 && bogey_count <= 3) {
         // TESTING: Set it's position attributes relative to the bulls eye
