@@ -52,7 +52,7 @@ namespace cpv {
 		//void DrawCenteredAt(SDL_Renderer* renderer, Coordinate center_point);
 		//void DrawCenteredAt(SDL_Renderer* renderer, int x, int y);
 		void DrawArc(SDL_Renderer* renderer, int user_bearing_guess);
-		void DrawArc2(SDL_Renderer* renderer, int user_bearing_guess, Coordinate aircraft_center);
+		void DrawRect(SDL_Renderer* renderer);
 		void SetRandomPosition();
 		Coordinate GetPosition() const;
 		void SetUIPosition(Coordinate new_position);

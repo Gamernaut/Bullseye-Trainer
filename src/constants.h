@@ -23,6 +23,9 @@
 
 namespace cpv {
 
+// Use this as a flag to allow conditional compilation of test code or release code
+#define TESTINGMODE
+
 ////////////////////////////////////////
 // These custom data types hold info about absolute (Coordinate) and relative (BearingRangeAltitude) positions of objects in the program
 ////////////////////////////////////////
@@ -36,6 +39,10 @@ namespace cpv {
 			return (x == c.x && y == c.y);
 		}
 	};
+
+	// Global variable to hold mouse click co-ordinates to ease passing them around and erros in calculations. Needs to be part of the game_data object in future versions
+	// this needs to be inline so it's not added in new translation units and get a redefinition error
+	inline Coordinate g_mouse_click_pos = { 0,0 };
 
 	// Data type to hold the Bearing, Range/distance, Altitude and Aspect/Heading (BRAA) of an aircraft in relation to a defined point, such as the bullseye or players aircraft
 	struct BearingRangeAltitudeHeading {
@@ -78,7 +85,6 @@ namespace cpv {
 
 		const int kTextPanelHeight = 180;
 		const int kTextPanelWidth = kWindowWidth;
-		inline Coordinate mouse_click_position = { 0 , 0 };
 
 	////////////////////////////////////////
 	// General MFD setup parameters.

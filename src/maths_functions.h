@@ -12,7 +12,7 @@ namespace cpv {
 	// For example, the bullseye object stores the angle from it's self to my aircraft.
 	// If I want the angle from my aircraft to the bullseye, the reciprocal, this function will convert that for me.
 
-	inline int reciprocate_heading(int heading_to_convert) {
+	inline int reciprocate_angle(int heading_to_convert) {
 		int reciprocal_heading = 0;
 
 		if (heading_to_convert == 0) {

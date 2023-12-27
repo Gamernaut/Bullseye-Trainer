@@ -270,8 +270,8 @@ void Bulls_Trainer::ProcessInput() {
 				// Handle a click that's inside the MFD surround (not a button press but a guess by the user)
 				if (mouseX >= kLeftMfdFrameSize && mouseX <= (kLeftMfdFrameSize + kMfdDrawAreaWidth) &&
 					mouseY >= (kTextPanelHeight + kTopMfdFrameSize) && mouseY <= (kTextPanelHeight + kTopMfdFrameSize + kMfdDrawAreaHeight)) {
-					mouse_click_position.x = mouseX;
-					mouse_click_position.y = mouseY;
+					g_mouse_click_pos.x = mouseX;
+					g_mouse_click_pos.y = mouseY;
 					PLOG_INFO << "HSD guess made -> Calling CheckGuessAgainstWinCondition()";
 					game_state = GameState::kRoundPlaying;
 					Coordinate bulls_position = display_manager_->hsd_screen_->bullseye_->GetPosition();
@@ -280,7 +280,7 @@ void Bulls_Trainer::ProcessInput() {
 					int aircraft_heading = display_manager_->hsd_screen_->my_aircraft_->GetHeading();
 					double milesperpixel = display_manager_->hsd_screen_->GetMilesPerPixel();
 					display_manager_->hsd_screen_->SetMouseClickPosition(mouseX, mouseY);
-					round_manager_->CheckGuessAgainstWinCondition(game_state, mouse_click_position, settings_manager_, bulls_position, bulls_bearing, aircraft_position, aircraft_heading, milesperpixel);
+					round_manager_->CheckGuessAgainstWinCondition(game_state, settings_manager_, bulls_position, bulls_bearing, aircraft_position, aircraft_heading, milesperpixel);
 					break;
 				}
 

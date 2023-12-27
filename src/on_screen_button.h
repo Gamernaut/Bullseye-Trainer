@@ -55,7 +55,7 @@ namespace cpv {
         void SetOnScreenText(std::string text);
         std::string GetOnScreenText();
         void HighlightOnScreenText(bool flag);
-        bool IsMousePointerOverButton(int mouse_x, int mouse_y);
+        //bool IsMousePointerOverButton(int mouse_x, int mouse_y);
         void ToggleButtonState();
         ButtonState GetButtonToggeledState();
         void DrawOutline(SDL_Renderer* renderer);

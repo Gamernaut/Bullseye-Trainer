@@ -10,6 +10,7 @@
 // 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//#include "constants.h"
 #include "round_manager.h"
 
 using namespace cpv;
@@ -42,10 +43,15 @@ void RoundManager::CheckRecruitWinStatus(GameState& state, Coordinate aircraft_p
     PLOG_VERBOSE << "RoundManager::CheckRecruitWinStatus() called";
 
     // Calculate the user guessed bearing (the order is important)
-    int user_bearing_guess = angle_between_point_a_and_b(aircraft_position, mouse_click_pos_);
+    int user_bearing_guess = angle_between_point_a_and_b(aircraft_position, g_mouse_click_pos);
+    int reciprocal_bulls_bearing = reciprocate_angle(bulls_bearing);
 
-    // This needs to handle 360/0 as well
-    if ((user_bearing_guess >= (bulls_bearing - 15) || user_bearing_guess >= (360 - 15)) && (user_bearing_guess <= (bulls_bearing + 15) || user_bearing_guess >= (0 + 15)) ) {
+    // This needs to handle the situation where the bullseye is 180 to the aircraft as +/- 15 goes past the 360/0 boundary which complicates the maths
+    if (reciprocal_bulls_bearing >= 345) {
+        user_bearing_guess = user_bearing_guess + reciprocal_bulls_bearing;
+    }
+    //if ((user_bearing_guess >= (reciprocate_angle(bulls_bearing) - 15) || user_bearing_guess >= (360 - 15)) && (user_bearing_guess <= (reciprocate_angle(bulls_bearing) + 15) || user_bearing_guess >= (0 + 15)) ) {
+    if (user_bearing_guess >= (reciprocal_bulls_bearing - 15) && (user_bearing_guess <= reciprocal_bulls_bearing + 15)) {
         // Player has picked a direction that is within +/- 15 deg of the actual direction
         state = GameState::kRoundWon;
     } else if (current_guess_ < total_guesses_) {
@@ -65,8 +71,8 @@ void RoundManager::CheckCadetWinStatus(GameState& state, Coordinate bullseye_pos
 
     PLOG_VERBOSE << "RoundManager::CheckCadetWinStatus() called";
 
-    int x_difference = bullseye_position.x - mouse_click_position.x;
-    int y_difference = bullseye_position.y - mouse_click_position.y;
+    int x_difference = bullseye_position.x - g_mouse_click_pos.x;
+    int y_difference = bullseye_position.y - g_mouse_click_pos.y;
 
     if (x_difference <= 15 && x_difference >= -15 && y_difference <= 15 && y_difference >= -15) {
         // Player has picked the location of the bulls eye so set game state to display the green box over the bullseye
@@ -90,7 +96,7 @@ void RoundManager::CheckRookieWinStatus(GameState& state, Coordinate bullseye_po
 
     // Get the bearing from bulls to the bogey (will only be 1 bogey at this difficulty level)
     int bulls_heading_to_bogey = enemy_manager_->GetBogieAtVectorPosition(0).GetBearing();
-    int user_bearing_guess = angle_between_point_a_and_b(bullseye_position, mouse_click_pos_);
+    int user_bearing_guess = angle_between_point_a_and_b(bullseye_position, g_mouse_click_pos);
 
     if (user_bearing_guess >= (bulls_heading_to_bogey - 15) && user_bearing_guess <= (bulls_heading_to_bogey + 15)) {
         // Player has picked a direction that is within +/- 15 deg of the actual direction
@@ -115,8 +121,8 @@ void RoundManager::CheckVeteranWinStatus(GameState& state, Coordinate bullseye_p
     double  bogey_range = static_cast<double>(enemy_manager_->GetBogieAtVectorPosition(0).GetRange());
     Coordinate bogey_position = calc_endpoint_given_start_bearing_and_range(bullseye_position, bulls_bearing, aircraft_heading, bogey_range, milesperpixel);
 
-    int x_difference = bogey_position.x - mouse_click_position.x;
-    int y_difference = bogey_position.y - mouse_click_position.y;
+    int x_difference = bogey_position.x - g_mouse_click_pos.x;
+    int y_difference = bogey_position.y - g_mouse_click_pos.y;
 
     if (x_difference <= 15 && x_difference >= -15 && y_difference <= 15 && y_difference >= -15) {
         // Player has picked the location of the bulls eye so set game state to display the green box over the bullseye
@@ -173,11 +179,10 @@ void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>& settings_m
     // Might need to pass the HSD reference to this object so we can set the values from here
 }
 
-void RoundManager::CheckGuessAgainstWinCondition(GameState& state, Coordinate mouse_click_position, const std::unique_ptr<SettingsManager>& settings_manager, Coordinate bullseye_position, int bulls_bearing, Coordinate aircraft_position, int aircraft_heading, double milesperpixel) {
+void RoundManager::CheckGuessAgainstWinCondition(GameState& state, const std::unique_ptr<SettingsManager>& settings_manager, Coordinate bullseye_position, int bulls_bearing, Coordinate aircraft_position, int aircraft_heading, double milesperpixel) {
     
     PLOG_VERBOSE << "RoundManager::CheckGuessAgainstWinCondition() called";
 
-    mouse_click_pos_ = mouse_click_position;
     IncreaseGuessCount();
 
     if (GetRemainingGuesses() > 0) {

@@ -44,11 +44,11 @@ void OnSceenButton::HighlightOnScreenText(bool flag)
     PLOG_VERBOSE << "OnSceenButton::HighlightOnScreenText() called";
 }
 
-bool OnSceenButton::IsMousePointerOverButton(int mouse_x, int mouse_y)
-{
-    PLOG_VERBOSE << "OnSceenButton::IsMousePointerOverButton() called";
-    return false;
-}
+//bool OnSceenButton::IsMousePointerOverButton(int mouse_x, int mouse_y)
+//{
+//    PLOG_VERBOSE << "OnSceenButton::IsMousePointerOverButton() called";
+//    return false;
+//}
 
 void OnSceenButton::ToggleButtonState()
 {

@@ -39,8 +39,6 @@ namespace cpv {
 		int current_guess_ = 0;
 		int bogey_count_ = 0;
 
-		Coordinate mouse_click_pos_ = { 0,0 };
-
 		std::unique_ptr<AWACSManager> awacs_manager_ = nullptr;  
 
 	public:
@@ -64,7 +62,7 @@ namespace cpv {
 		RoundManager();
 		~RoundManager();
 		void SetupRound(const std::unique_ptr<SettingsManager>& settings_manager_);
-		void CheckGuessAgainstWinCondition(GameState& state, Coordinate mouse_click_position, const std::unique_ptr<SettingsManager>& settings_manager, Coordinate bullseye_position, int bulls_bearing, Coordinate aircraft_position, int aircraft_heading, double milesperpixel);
+		void CheckGuessAgainstWinCondition(GameState& state, const std::unique_ptr<SettingsManager>& settings_manager, Coordinate bullseye_position, int bulls_bearing, Coordinate aircraft_position, int aircraft_heading, double milesperpixel);
 		int GetRemainingGuesses() const;
 		void ResetRound();
 		std::string GenerateAwacsCallString(int bogey_index);

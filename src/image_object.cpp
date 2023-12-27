@@ -91,10 +91,19 @@ void ImageObject::DrawArc(SDL_Renderer* renderer, int user_bearing_guess) {
     }
 }
 
-void ImageObject::DrawArc2(SDL_Renderer* renderer, int user_bearing_guess, Coordinate aircraft_center) {
-    PLOG_VERBOSE << "ImageObject::DrawArc2() called";
+void ImageObject::DrawRect(SDL_Renderer* renderer) {
+    PLOG_VERBOSE << "ImageObject::DrawRect() called";
 
-    // TODO: Implement DrawArc2
+    // Find the center point of the square
+    int top_left_corner_x = g_mouse_click_pos.x - (image_width_ / 2);
+    int top_left_corner_y = g_mouse_click_pos.y - (image_height_ / 2);
+
+    SDL_Rect imageDestinationRectangle = { top_left_corner_x, top_left_corner_y, image_width_, image_height_ };
+
+    int renderSuccess = SDL_RenderCopyEx(renderer, image_texture_, NULL, &imageDestinationRectangle, 0, NULL, SDL_FLIP_NONE);
+    if (renderSuccess != 0) {
+        std::cout << "SDL_RenderCopy returned " << SDL_GetError() << "in ImageObject::Draw()" << std::endl;
+    }
 }
 
 void ImageObject::SetRandomPosition() {

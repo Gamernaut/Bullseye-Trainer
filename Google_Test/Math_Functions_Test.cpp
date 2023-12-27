@@ -12,32 +12,32 @@ using namespace cpv;
 ///////////////////////////////////
 
 TEST(MathsFunction, reciprocate_heading_case_1) {
-    EXPECT_EQ(reciprocate_heading(90), 270);
+    EXPECT_EQ(reciprocate_angle(90), 270);
 }
 
 TEST(MathsFunction, reciprocate_heading_case_2) {
-    EXPECT_EQ(reciprocate_heading(0), 180);
+    EXPECT_EQ(reciprocate_angle(0), 180);
 }
 
 TEST(MathsFunction, reciprocate_heading_case_3) {
-    EXPECT_EQ(reciprocate_heading(10), 190);
+    EXPECT_EQ(reciprocate_angle(10), 190);
 }
 
 TEST(MathsFunction, reciprocate_heading_case_4) {
-    EXPECT_EQ(reciprocate_heading(180), 0);
+    EXPECT_EQ(reciprocate_angle(180), 0);
 }
 
 TEST(MathsFunction, reciprocate_heading_case_5) {
-    EXPECT_EQ(reciprocate_heading(270), 90);
+    EXPECT_EQ(reciprocate_angle(270), 90);
 }
 
 TEST(MathsFunction, reciprocate_heading_case_6) {
-    EXPECT_EQ(reciprocate_heading(225), 45);
+    EXPECT_EQ(reciprocate_angle(225), 45);
 }
 
 // Test for accidental use of a floating number
 TEST(MathsFunction, reciprocate_heading_case_7) {
-    EXPECT_EQ(reciprocate_heading(137.8), 317);
+    EXPECT_EQ(reciprocate_angle(137.8), 317);
 }
 
 
