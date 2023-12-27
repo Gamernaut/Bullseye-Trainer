@@ -121,8 +121,9 @@ namespace cpv {
 
 		double scaled_dist = distance_in_miles / miles_per_pixel;
 
-		// difference_in_angle = (static_cast<int>(bearing_from_start_point) + static_cast<int>(my_aircraft_current_heading)) % 360;
+		// needs to account for aircraft heading so need to convert to absolute heading so it matches heading from North from bullseye
 		difference_in_angle = (static_cast<int>(bearing_from_start_point) + static_cast<int>(my_aircraft_current_heading)) % 360;
+
 		new_X = static_cast<int>(start_point.x + (scaled_dist * sin(difference_in_angle * deg_to_rads)));
 		new_Y = static_cast<int>(start_point.y + (scaled_dist * -cos(difference_in_angle * deg_to_rads)));
 

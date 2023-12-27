@@ -37,17 +37,19 @@ RoundManager::~RoundManager()
     // TODO: Implement ~RoundManager
 }
 
-void RoundManager::CheckRecruitWinStatus(GameState& state, Coordinate aircraft_position, int bulls_bearing) {
+void RoundManager::CheckRecruitWinStatus(GameState& state, Coordinate aircraft_position, int aircraft_heading, int bulls_bearing) {
     // Win condition is to correctly identify the bearing of the bullseye from the aircraft (within a cone 30 deg wide, +/- 15 deg of the point clicked on)
 
     PLOG_VERBOSE << "RoundManager::CheckRecruitWinStatus() called";
 
     // Calculate the user guessed bearing (the order is important)
-    int user_bearing_guess = angle_between_point_a_and_b(aircraft_position, g_mouse_click_pos);
+    int user_bearing_guess = angle_between_point_a_and_b(aircraft_position, g_mouse_click_pos) + aircraft_heading;
     int reciprocal_bulls_bearing = reciprocate_angle(bulls_bearing);
 
     // This needs to handle the situation where the bullseye is 180 to the aircraft as +/- 15 goes past the 360/0 boundary which complicates the maths
-    if (reciprocal_bulls_bearing >= 345) {
+    // Check to see if the user bearing is up to 15 deg past 360/0 and if the recip[procal bulls headign is within 15 deg of 360.
+    // If this is true then they can be added to account for clicking on the right side of 360 
+    if (reciprocal_bulls_bearing >= 345 && user_bearing_guess >= 0 && user_bearing_guess <= 15) {
         user_bearing_guess = user_bearing_guess + reciprocal_bulls_bearing;
     }
     //if ((user_bearing_guess >= (reciprocate_angle(bulls_bearing) - 15) || user_bearing_guess >= (360 - 15)) && (user_bearing_guess <= (reciprocate_angle(bulls_bearing) + 15) || user_bearing_guess >= (0 + 15)) ) {
@@ -67,14 +69,14 @@ void RoundManager::CheckRecruitWinStatus(GameState& state, Coordinate aircraft_p
 
 
 void RoundManager::CheckCadetWinStatus(GameState& state, Coordinate bullseye_position) {
-    // Win condition is to correctly identify the position of the bullseye within the size of the bulls eye (30 x 30 pixels)
+    // Win condition is to correctly identify the position of the bullseye within +/- 30 pixels
 
     PLOG_VERBOSE << "RoundManager::CheckCadetWinStatus() called";
 
     int x_difference = bullseye_position.x - g_mouse_click_pos.x;
     int y_difference = bullseye_position.y - g_mouse_click_pos.y;
 
-    if (x_difference <= 15 && x_difference >= -15 && y_difference <= 15 && y_difference >= -15) {
+    if (x_difference <= 32 && x_difference >= -32 && y_difference <= 32 && y_difference >= -32) {
         // Player has picked the location of the bulls eye so set game state to display the green box over the bullseye
         state = GameState::kRoundWon;
     } else if (current_guess_ < total_guesses_) {
@@ -89,7 +91,7 @@ void RoundManager::CheckCadetWinStatus(GameState& state, Coordinate bullseye_pos
 }
  
 
-void RoundManager::CheckRookieWinStatus(GameState& state, Coordinate bullseye_position) {
+void RoundManager::CheckRookieWinStatus(GameState& state, int aircraft_heading, Coordinate bullseye_position) {
     // Win condition is to correctly identify the bearing from the bullseye to the bogey within +/- 15 deg of actual.
 
     PLOG_VERBOSE << "RoundManager::CheckRookieWinStatus() called";
@@ -97,6 +99,10 @@ void RoundManager::CheckRookieWinStatus(GameState& state, Coordinate bullseye_po
     // Get the bearing from bulls to the bogey (will only be 1 bogey at this difficulty level)
     int bulls_heading_to_bogey = enemy_manager_->GetBogieAtVectorPosition(0).GetBearing();
     int user_bearing_guess = angle_between_point_a_and_b(bullseye_position, g_mouse_click_pos);
+
+    // needs to account for aircraft heading so need to convert to absolute heading so it matches heading from North from bullseye
+    user_bearing_guess = abs(user_bearing_guess - (360 - aircraft_heading));
+
 
     if (user_bearing_guess >= (bulls_heading_to_bogey - 15) && user_bearing_guess <= (bulls_heading_to_bogey + 15)) {
         // Player has picked a direction that is within +/- 15 deg of the actual direction
@@ -119,12 +125,13 @@ void RoundManager::CheckVeteranWinStatus(GameState& state, Coordinate bullseye_p
     PLOG_VERBOSE << "RoundManager::CheckVeteranWinStatus() called";
 
     double  bogey_range = static_cast<double>(enemy_manager_->GetBogieAtVectorPosition(0).GetRange());
-    Coordinate bogey_position = calc_endpoint_given_start_bearing_and_range(bullseye_position, bulls_bearing, aircraft_heading, bogey_range, milesperpixel);
+    // Negative aircraft heading is CRITICAL for this to work
+    Coordinate bogey_position = calc_endpoint_given_start_bearing_and_range(bullseye_position, enemy_manager_->GetBogieAtVectorPosition(0).GetBearing(), -aircraft_heading, bogey_range, milesperpixel);
 
     int x_difference = bogey_position.x - g_mouse_click_pos.x;
     int y_difference = bogey_position.y - g_mouse_click_pos.y;
 
-    if (x_difference <= 15 && x_difference >= -15 && y_difference <= 15 && y_difference >= -15) {
+    if (x_difference <= 32 && x_difference >= -32 && y_difference <= 32 && y_difference >= -32) {
         // Player has picked the location of the bulls eye so set game state to display the green box over the bullseye
         state = GameState::kRoundWon;
     }
@@ -185,17 +192,17 @@ void RoundManager::CheckGuessAgainstWinCondition(GameState& state, const std::un
 
     IncreaseGuessCount();
 
-    if (GetRemainingGuesses() > 0) {
+    if (GetRemainingGuesses() >= 0) {
         // Check the win condition for this round based on level of difficulty
         switch (settings_manager->GetGameDifficulty()) {
             case Difficulty::kRecruit:
-                CheckRecruitWinStatus(state, aircraft_position, bulls_bearing);
+                CheckRecruitWinStatus(state, aircraft_position, aircraft_heading, bulls_bearing);
                 break;
             case Difficulty::kCadet:
                 CheckCadetWinStatus(state, bullseye_position);
                 break;
             case Difficulty::kRookie:
-                CheckRookieWinStatus(state, bullseye_position);
+                CheckRookieWinStatus(state, aircraft_heading, bullseye_position);
                 break;
             case Difficulty::kVeteran:
                 CheckVeteranWinStatus(state, bullseye_position, bulls_bearing, aircraft_heading, milesperpixel);
@@ -207,6 +214,7 @@ void RoundManager::CheckGuessAgainstWinCondition(GameState& state, const std::un
     } else {
         // No guesses remaining
         // TODO: check how we clean up at the end of a round. Probably want to pause to allow the user to restart etc.
+        SDL_Delay(2500);            // Delay exit so can see what's drawn after third guess
         state = GameState::kGameEnded;
     }
 }

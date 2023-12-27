@@ -68,7 +68,7 @@ void ImageObject::Draw(SDL_Renderer* renderer)
 }
 
 
-void ImageObject::DrawArc(SDL_Renderer* renderer, int user_bearing_guess) {
+void ImageObject::DrawArc(SDL_Renderer* renderer, Coordinate start_point, int user_bearing_guess) {
     PLOG_VERBOSE << "ImageObject::DrawArc() called";
 
     // TODO: Implement DrawArc
@@ -78,8 +78,8 @@ void ImageObject::DrawArc(SDL_Renderer* renderer, int user_bearing_guess) {
 
     // Non matrix maths for rotating around an arbitary point https://academo.org/demos/rotation-about-point/
 
-    int top_left_corner_x = 359 - (image_width_ / 2);
-    int top_left_corner_y = 667 - (image_height_ / 2);
+    int top_left_corner_x = start_point.x - (image_width_ / 2);
+    int top_left_corner_y = start_point.y - (image_height_ / 2);
 
     SDL_Rect imageDestinationRectangle = { top_left_corner_x, top_left_corner_y, image_width_, image_height_ };
 

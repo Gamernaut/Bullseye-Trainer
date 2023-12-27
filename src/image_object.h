@@ -51,7 +51,7 @@ namespace cpv {
 		virtual void Draw(SDL_Renderer* renderer);
 		//void DrawCenteredAt(SDL_Renderer* renderer, Coordinate center_point);
 		//void DrawCenteredAt(SDL_Renderer* renderer, int x, int y);
-		void DrawArc(SDL_Renderer* renderer, int user_bearing_guess);
+		void DrawArc(SDL_Renderer* renderer, Coordinate start_point, int user_bearing_guess);
 		void DrawRect(SDL_Renderer* renderer);
 		void SetRandomPosition();
 		Coordinate GetPosition() const;

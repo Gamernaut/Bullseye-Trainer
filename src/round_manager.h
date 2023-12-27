@@ -48,9 +48,9 @@ namespace cpv {
 
 	// Methods
 	protected:
-		void CheckRecruitWinStatus(GameState& state, Coordinate aircraft_position, int bulls_bearing);
+		void CheckRecruitWinStatus(GameState& state, Coordinate aircraft_position, int aircraft_heading, int bulls_bearing);
 		void CheckCadetWinStatus(GameState& state, Coordinate bullseye_position);
-		void CheckRookieWinStatus(GameState& state, Coordinate bullseye_position);
+		void CheckRookieWinStatus(GameState& state, int aircraft_heading, Coordinate bullseye_position);
 		void CheckVeteranWinStatus(GameState& state, Coordinate bullseye_position, int bulls_bearing, int aircraft_heading, double milesperpixel);
 		void CheckAceWinStatus(GameState& state);
 		bool IsClickInRectAroundBulls();
