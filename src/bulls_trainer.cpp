@@ -99,7 +99,10 @@ void Bulls_Trainer::Run() {
 	// Sleep(2000);
 	if (game_state == GameState::kGameEnded && is_game_running_) {
 		round_manager_->ResetRound();
-		round_manager_->SetupRound(settings_manager_);
+		round_manager_->SetupRound(settings_manager_, display_manager_);
+		// This is a work around to not being able to call this method from RoundManager watch ouit for problems with this set up
+		display_manager_->hsd_screen_->RandomiseAircrafAndBullseye();
+		//round_manager_->SetupRound(settings_manager_);
 		game_state = GameState::kNewRound;
 	}
 	settings_manager_->WriteSettingsToRegistry();
@@ -133,7 +136,9 @@ void Bulls_Trainer::ProcessInput() {
 				if (mouseX >= kOSB13LeftEdge && mouseX <= kOSB13RightEdge && mouseY >= kOSB13TopEdge && mouseY <= kOSB13BottomEdge) {
 					game_state = GameState::kNewRound;
 					// Start a new round as this is the first time the game has been played
-					round_manager_->SetupRound(settings_manager_);
+					round_manager_->SetupRound(settings_manager_, display_manager_);
+					// This is a work around to not being able to call this method from RoundManager watch ouit for problems with this set up
+					display_manager_->hsd_screen_->RandomiseAircrafAndBullseye();
 					PLOG_INFO << "Start screen -> Start button clicked";
 					break;
 				}
@@ -217,7 +222,9 @@ void Bulls_Trainer::ProcessInput() {
 
 					// User may have changed the difficulty level so need to create anew round based on this
 					round_manager_->ResetRound();
-					round_manager_->SetupRound(settings_manager_);
+					round_manager_->SetupRound(settings_manager_, display_manager_);
+					// This is a work around to not being able to call this method from RoundManager watch ouit for problems with this set up
+					display_manager_->hsd_screen_->RandomiseAircrafAndBullseye();
 
 					PLOG_INFO << "Options screen Select button pressed -> Reset game state to NewRound";
 					break;

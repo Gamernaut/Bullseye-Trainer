@@ -27,8 +27,12 @@
 #include "settings_manager.h"
 #include "maths_functions.h"
 #include "bullseye.h"
+// #include "display_manager.h"			possible circular reference with display_manager.h
 
 namespace cpv {
+
+	// Only added to avoid circular reference above and so it will compile but doesn't work on line 189 of roundmanager.cpp
+	class DisplayManager;
 
 	class RoundManager {
 	// Attributes
@@ -55,13 +59,14 @@ namespace cpv {
 		void CheckAceWinStatus(GameState& state);
 		bool IsClickInRectAroundBulls();
 		void IncreaseGuessCount();
-//		bool IsClickInRectAroundBogey(Aircraft* bogey1, Aircraft* bogey2);
 
 
 	public:
 		RoundManager();
 		~RoundManager();
-		void SetupRound(const std::unique_ptr<SettingsManager>& settings_manager_);
+		void SetupRound(const std::unique_ptr<SettingsManager>& settings_manager_, std::unique_ptr<DisplayManager>& display_manager_);
+		//void SetupRound(const std::unique_ptr<SettingsManager>& settings_manager_);
+
 		void CheckGuessAgainstWinCondition(GameState& state, const std::unique_ptr<SettingsManager>& settings_manager, Coordinate bullseye_position, int bulls_bearing, Coordinate aircraft_position, int aircraft_heading, double milesperpixel);
 		int GetRemainingGuesses() const;
 		void ResetRound();

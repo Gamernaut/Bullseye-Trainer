@@ -154,7 +154,8 @@ void RoundManager::CheckAceWinStatus(GameState& state) {
 }
 
 
-void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>& settings_manager_) {
+void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>& settings_manager_, std::unique_ptr<DisplayManager>& display_manager_) {
+   // void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>&settings_manager_) {
     PLOG_VERBOSE << "RoundManager::SetupRound() called";
 
     // TODO: Should this be in round_manager or bulls_trainer?
@@ -183,7 +184,10 @@ void RoundManager::SetupRound(const std::unique_ptr<SettingsManager>& settings_m
     }
 
     // TODO: Set the F16 heading and the bulls position here
-    // Might need to pass the HSD reference to this object so we can set the values from here
+    // Use the display manager pointer to access the HSD reference so we can call the method in the HSD object
+
+    // Compiler doesn't know what this is as I can't include the deceleration of the call, just a forward definition but that doesn;t include any details
+    // display_manager_->hsd_screen_->RandomiseAircrafAndBullseye();
 }
 
 void RoundManager::CheckGuessAgainstWinCondition(GameState& state, const std::unique_ptr<SettingsManager>& settings_manager, Coordinate bullseye_position, int bulls_bearing, Coordinate aircraft_position, int aircraft_heading, double milesperpixel) {

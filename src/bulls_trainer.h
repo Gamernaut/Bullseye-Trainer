@@ -63,13 +63,11 @@ namespace cpv {
         void Render();
         void ProcessInput();
         void Run();
-
-
     
     protected:
     
     private:
-        //bool LoadAndSetUpSDL(); // TODO: Does this need implementing??
+
     };
 }
 

@@ -112,6 +112,7 @@ namespace cpv {
 		void DrawGuessRect(SDL_Renderer* sdl_renderer, bool guess_status);
 		void SetMouseClickPosition(int x, int y);
 		Coordinate GetMouseClickPosition();
+		void RandomiseAircrafAndBullseye();
 	};
 }
 

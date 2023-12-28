@@ -69,19 +69,12 @@ HSD::HSD(SDL_Renderer* sdl_renderer_, int mfd_top_edge, int mfd_left_edge, int m
     my_aircraft_ = std::make_unique<Aircraft>(sdl_renderer_, kAircraftFileName);
     if (!my_aircraft_) {
         PLOG_ERROR << "HSD constructor: Could not create my_aircraft_";
-    } else {
-        // TODO: remove this else clause, but heading needs to be set from somewhere, probably round manager during new round creation. Change this value to change my aircraft heading
-        my_aircraft_->SetHeading(135);                                                                                // TESTING
-    }
+    } 
 
     // Bullseye symbol
     bullseye_ = std::make_unique<Bullseye>(sdl_renderer_, kBullsFileName);
     if (!bullseye_) {
         PLOG_ERROR << "HSD constructor: Could not create bullseye_";
-    } else {
-        // TODO: remove this else clause, but these need to be set from somewhere, probably round manager during new round creation. Change these values to affect bullseye position
-        bullseye_->SetBearingFromBullseyeToMyAircraft(175);                                                          // TESTING
-        bullseye_->SetRangeFromBullseyeToMyAircraft(8);
     }
 
     // Bogey symbol
@@ -240,6 +233,18 @@ void HSD::SetMouseClickPosition(int x, int y) {
 
 Coordinate HSD::GetMouseClickPosition() {
     return g_mouse_click_pos;
+}
+
+void cpv::HSD::RandomiseAircrafAndBullseye()
+{
+    int aircraft_heading = 1 + (rand() % 360);
+    my_aircraft_->SetHeading(aircraft_heading);
+
+    int bullseye_bearing = 1 + (rand() % 360);
+    bullseye_->SetBearingFromBullseyeToMyAircraft(bullseye_bearing);
+    int bullseye_range = 5 + (rand() % 55);
+    bullseye_->SetRangeFromBullseyeToMyAircraft(bullseye_range);
+
 }
 
 
