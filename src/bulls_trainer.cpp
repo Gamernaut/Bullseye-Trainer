@@ -70,7 +70,7 @@ bool Bulls_Trainer::Initialise()  {
 	std::srand((unsigned int)std::time(NULL));
 
 	// Set game flags/states to start conditions
-	is_game_running_ = true;
+	// is_game_running_ = true;
 	game_state = GameState::kStartScreen;
     
 	return true;
@@ -84,30 +84,38 @@ void Bulls_Trainer::Run() {
 	// This will reset the round but that's fine as changes in difficulty level will affect the round so the round has to be set up once
 	// the difficulty level is known
 
-	//round_manager_->ResetRound();		// do we need to set the gamestate at this point or is it already set properly
 
 	while (game_state != GameState::kGameEnded) {
 		// Limit speed to consistent frame rate. Not really needed in this application, but good practice to include it anyway.
 		while (!SDL_TICKS_PASSED(SDL_GetTicks(), milliseconds_previous_frame_ + kmilliseconds_per_frame));
-
 		// Store the current frame time
 		milliseconds_previous_frame_ = SDL_GetTicks();
 
 		ProcessInput();
 		Render();
-	}
-	// Sleep(2000);
-	if (game_state == GameState::kGameEnded && is_game_running_) {
-		round_manager_->ResetRound();
-		round_manager_->SetupRound(settings_manager_, display_manager_);
-		// This is a work around to not being able to call this method from RoundManager watch ouit for problems with this set up
-		display_manager_->hsd_screen_->RandomiseAircrafAndBullseye();
-		//round_manager_->SetupRound(settings_manager_);
-		game_state = GameState::kNewRound;
+
+		if (game_state == GameState::kRoundEnded || game_state == GameState::kRoundWon) {
+			display_manager_->DrawRoundOverMessage();
+			Sleep(2500);
+			round_manager_->SetupRound(settings_manager_, display_manager_);
+			// This is a work around to not being able to call this method from RoundManager watch out for problems with this set up
+			display_manager_->hsd_screen_->RandomiseAircrafAndBullseye();
+			display_manager_->hsd_screen_->ResetHSDRange();
+			display_manager_->hsd_screen_->SetCenteredState(false);
+			game_state = GameState::kNewRound;
+		}
 	}
 	settings_manager_->WriteSettingsToRegistry();
 }
 
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+// 
+//			Main event loop which captures all the mouse clicks
+//
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
 void Bulls_Trainer::ProcessInput() {
 	SDL_Event sdlEvent;
@@ -221,9 +229,8 @@ void Bulls_Trainer::ProcessInput() {
 					game_state = GameState::kNewRound;
 
 					// User may have changed the difficulty level so need to create anew round based on this
-					round_manager_->ResetRound();
 					round_manager_->SetupRound(settings_manager_, display_manager_);
-					// This is a work around to not being able to call this method from RoundManager watch ouit for problems with this set up
+					// This is a work around to not being able to call this method from RoundManager watch out for problems with this set up
 					display_manager_->hsd_screen_->RandomiseAircrafAndBullseye();
 
 					PLOG_INFO << "Options screen Select button pressed -> Reset game state to NewRound";
@@ -353,5 +360,4 @@ void Bulls_Trainer::Render() {
 
 
 void Bulls_Trainer::CloseDown() {
-	// TODO is this needed??
 }

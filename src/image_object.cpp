@@ -71,12 +71,11 @@ void ImageObject::Draw(SDL_Renderer* renderer)
 void ImageObject::DrawArc(SDL_Renderer* renderer, Coordinate start_point, int user_bearing_guess) {
     PLOG_VERBOSE << "ImageObject::DrawArc() called";
 
-    // TODO: Implement DrawArc
     // Need to center the middle of the bottom of the image in the center of the aircraft.
     // then rotate the image to match the bearing the user selected with the center of the
     // pie slice aligning with the point the user clicked on.
 
-    // Non matrix maths for rotating around an arbitary point https://academo.org/demos/rotation-about-point/
+    // Non matrix maths for rotating around an arbitrary point https://academo.org/demos/rotation-about-point/
 
     int top_left_corner_x = start_point.x - (image_width_ / 2);
     int top_left_corner_y = start_point.y - (image_height_ / 2);
@@ -106,11 +105,6 @@ void ImageObject::DrawRect(SDL_Renderer* renderer) {
     }
 }
 
-void ImageObject::SetRandomPosition() {
-    PLOG_VERBOSE << "ImageObject::SetRandomPosition() called";
-
-    // TODO: Implement SetRandomPosition
-}
 
 // Returns the center of the Image as this is used in distance and bearing calculations
 Coordinate ImageObject::GetPosition() const {
@@ -152,12 +146,7 @@ std::string ImageObject::GetObjectName() const {
     return name_;
 }
 
-bool ImageObject::ValidPosition(int x, int y) {
-    PLOG_VERBOSE << "ImageObject::ValidPosition() called";
 
-    // TODO: Implement ValidPosition
-    return false;      // Update to actual code, this may give unexpected behaviour
-}
 
 int ImageObject::GetWidth() const {
     PLOG_VERBOSE << "ImageObject::GetWidth() called";

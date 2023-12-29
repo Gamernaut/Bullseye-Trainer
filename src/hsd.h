@@ -113,6 +113,7 @@ namespace cpv {
 		void SetMouseClickPosition(int x, int y);
 		Coordinate GetMouseClickPosition();
 		void RandomiseAircrafAndBullseye();
+		void DrawRoundOverMessage(SDL_Renderer* sdl_renderer_);
 	};
 }
 

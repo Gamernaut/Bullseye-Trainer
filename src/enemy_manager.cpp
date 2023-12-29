@@ -35,13 +35,27 @@ void EnemyManager::CreateBogey(int bogey_count) {
 
     if (bogey_count > 3) bogey_count = 3;
 
+    int bearingFromBullsToBogey = 0;
+    int rangeFromBullsToBogey = 0;
+    int bogeyAltitude = 0;
+    int bogeyHeading = 0;
+
     if (bogey_count > 0 && bogey_count <= 3) {
-        // TESTING: Set it's position attributes relative to the bulls eye
-        // TODO: Set these as random values once testing is finished
-        tempBogey.SetBearing(180);
-        tempBogey.SetRange(17);
-        tempBogey.SetAltitude(17);
-        tempBogey.SetHeading(0);
+        // Avoid 0 and 360 as these can cause issues
+        bearingFromBullsToBogey = 1 + rand() % 358;
+        tempBogey.SetBearing(bearingFromBullsToBogey);
+
+        // Range to between 5 miles and 40 miles
+        rangeFromBullsToBogey = 5 + (rand() % 35);
+        tempBogey.SetRange(rangeFromBullsToBogey);
+
+        // Between angels 5 and 40
+        bogeyAltitude = 5 + (rand() % 35);
+        tempBogey.SetAltitude(bogeyAltitude);
+
+        // Same and bulls stay away from 0 and 360
+        bogeyHeading = 1 + rand() % 358;
+        tempBogey.SetHeading(bogeyHeading);
 
         // Add a copy of tempBogey to vector, tempBogey destroyed when function returns
         bogie_vector_.push_back(tempBogey);

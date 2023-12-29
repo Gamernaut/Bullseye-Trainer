@@ -149,3 +149,7 @@ void DisplayManager::CloseDown() {
 	TTF_Quit();
 	SDL_Quit();
 }
+
+void cpv::DisplayManager::DrawRoundOverMessage() {
+	hsd_screen_->DrawRoundOverMessage(sdl_renderer_);
+}

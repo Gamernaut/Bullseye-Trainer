@@ -237,14 +237,24 @@ Coordinate HSD::GetMouseClickPosition() {
 
 void cpv::HSD::RandomiseAircrafAndBullseye()
 {
-    int aircraft_heading = 1 + (rand() % 360);
+    // TODO: Can use these lines to hardcode bulls and heading positions
+    //my_aircraft_->SetHeading(175);
+    //bullseye_->SetBearingFromBullseyeToMyAircraft(78);
+    //bullseye_->SetRangeFromBullseyeToMyAircraft(8);
+
+    int aircraft_heading = 1 + (rand() % 358);
     my_aircraft_->SetHeading(aircraft_heading);
 
-    int bullseye_bearing = 1 + (rand() % 360);
+    int bullseye_bearing = 1 + (rand() % 358);
     bullseye_->SetBearingFromBullseyeToMyAircraft(bullseye_bearing);
     int bullseye_range = 5 + (rand() % 55);
     bullseye_->SetRangeFromBullseyeToMyAircraft(bullseye_range);
 
+}
+
+void cpv::HSD::DrawRoundOverMessage(SDL_Renderer* sdl_renderer_) {
+    font_20_->DrawCenteredInWindow(sdl_renderer_, "ROUND OVER", kMfdYellowColour, 500);
+    SDL_RenderPresent(sdl_renderer_);
 }
 
 
@@ -273,19 +283,41 @@ void HSD::DrawGuessArc(SDL_Renderer* sdl_renderer, Coordinate start_point, int u
     }
 }
 
+// Original version, replaced with the one below
+//void HSD::DrawGuessRect(SDL_Renderer* sdl_renderer, bool guess_status) {
+//    PLOG_VERBOSE << "HSD::DrawGuessRect() called";
+//
+//    if (guess_status) {
+//        correct_guess_rect_->DrawRect(sdl_renderer);
+//        bullseye_->Draw(sdl_renderer);
+//    } else {
+//        wrong_guess_rect_->DrawRect(sdl_renderer);
+//    }
+//}
 
 void HSD::DrawGuessRect(SDL_Renderer* sdl_renderer, bool guess_status) {
     PLOG_VERBOSE << "HSD::DrawGuessRect() called";
 
-    // TODO: Implement DrawCorrectGuessArc
+    // Define the size of the square to draw (centered on the mouse click point)
+    SDL_Rect imageDestinationRectangle = { g_mouse_click_pos.x - (kRectangleWidth / 2), g_mouse_click_pos.y - (kRectangleHeight / 2), kRectangleWidth, kRectangleHeight };
+
+    // Decide colour of the square based on guess status
     if (guess_status) {
-        correct_guess_rect_->DrawRect(sdl_renderer);
+        // Set draw colour to Green for correct guess
+        SDL_SetRenderDrawColor(sdl_renderer, 0, 130, 0, 255);
+        // As this was the correct guess draw the bullseye as well
         bullseye_->Draw(sdl_renderer);
     } else {
-        wrong_guess_rect_->DrawRect(sdl_renderer);
+        SDL_SetRenderDrawColor(sdl_renderer, 130, 0, 0, 255);
     }
-}
+    
+    int renderSuccess = SDL_RenderFillRect(sdl_renderer, &imageDestinationRectangle);
 
+    if (renderSuccess != 0) {
+        PLOG_ERROR << "HSD::DrawGuessRect() render error" << SDL_GetError();
+    }
+
+}
 
 // Add each static UI item to the draw queue - check if round manager and game state are even needed is even needed
 void HSD::AddStaticUIElementsToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_) {
@@ -421,17 +453,11 @@ void HSD::AddPanelTextToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& g
 void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_) {
     PLOG_VERBOSE << "HSD::AddSensorDataToDrawQueue() called";
 
-    // TODO: Implement display bulls in 3 higher levels but not in the 2 lower ones
-
     //////////////////////////
     // 
-    // Add bulls eye
+    // Bullseye setup
     //
     //////////////////////////
-    
-    // Get the bullseye position, if within HSD range convert to screen coordinates and draw on screen
-    //        if (bullseye_range <= GetHSDCurrentRange()) { }
-
 
     // Bulls bearing value is the bearing FROM the bulls TO my aircraft so have to use the reciprocal for following call to work
     // also we need to subtract the difference between the aircraft heading and the bulls bearing so made the heading negative.
@@ -440,22 +466,22 @@ void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState&
     int aircraft_heading = -my_aircraft_->GetHeading();     // This has to be negative for the bullseye to be positioned properly
     double distance_to_bulls = static_cast<double>(bullseye_->GetRangeFromBullseyeToMyAircraft());
     double milesperpixel = GetMilesPerPixel();
-
     Coordinate bulls_position = calc_endpoint_given_start_bearing_and_range(aircraft_start, bulls_bearing, aircraft_heading, distance_to_bulls, milesperpixel);
 
-    bullseye_->SetUIPosition(bulls_position);
-    bullseye_->Draw(sdl_renderer);
+    // Display the bullseye if the game difficulty is kRookie or above as this is needed for those levels, it's not needed for the lower 2 levels or if either the round has ended or the user has made the correct guess
+    //  TODO: Uncomment the following lines to hide the bullseye
+    //if (settings_manager_->GetGameDifficulty() == Difficulty::kRookie || settings_manager_->GetGameDifficulty() == Difficulty::kVeteran || settings_manager_->GetGameDifficulty() == Difficulty::kAce || 
+    //        game_state == GameState::kRoundEnded || game_state == GameState::kRoundWon) {
+        bullseye_->SetUIPosition(bulls_position);
+        bullseye_->Draw(sdl_renderer);
+    //}
 
-    // TODO: Implement display bogies only if correctly identified or round over
-     
-     
     //////////////////////////
     // 
-    // Add bogies
+    // Bogies setup
     //
     //////////////////////////
 
-    // TODO: Change this so it only draws the appropriate number of bogies based on game difficulty
     int bogey_count = 0;
 
     if (settings_manager_->GetGameDifficulty() != Difficulty::kAce) {
@@ -464,43 +490,47 @@ void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState&
         bogey_count = round_manager_->enemy_manager_->GetBogieCount();
     }
 
-    // For each bogey, get the BRAH data, convert to screen position taking HSD scale and centered/non centered into account then set position and add to draw queue
-    // Start count at 1 in case bogey count is 0 (as in easiest levels) of loop will always execute even with no bogies
-    for (int j = 1; j <= bogey_count; j++) {
+    // TODO: Uncomment the following lines to unhide the bogies
+    //if ((settings_manager_->GetGameDifficulty() == Difficulty::kRookie || settings_manager_->GetGameDifficulty() == Difficulty::kVeteran || settings_manager_->GetGameDifficulty() == Difficulty::kAce) &&
+    //    (game_state == GameState::kRoundEnded || game_state == GameState::kRoundWon)) {
 
-        // Bogey contains BRAA from bogey to bulls eye
-        Bogey tempBogey = round_manager_->enemy_manager_->GetBogieAtVectorPosition(j - 1);
+        // For each bogey, get the BRAH data, convert to screen position taking HSD scale and centered/non centered into account then set position and add to draw queue
+        // Start count at 1 in case bogey count is 0 (as in easiest levels) of loop will always execute even with no bogies
+        for (int j = 1; j <= bogey_count; j++) {
 
-        Coordinate bulls_start = bullseye_->GetPosition();
-        int bulls_bearing = tempBogey.GetBearing();
-        int aircraft_heading = -my_aircraft_->GetHeading();     // This was 0 in the original code
-        double bogey_range = static_cast<double>(tempBogey.GetRange());
-        double milesperpixel = GetMilesPerPixel();
+            // Bogey contains BRAA from bogey to bulls eye
+            Bogey tempBogey = round_manager_->enemy_manager_->GetBogieAtVectorPosition(j - 1);
 
-        Coordinate bogey_position = calc_endpoint_given_start_bearing_and_range(bulls_start, bulls_bearing, aircraft_heading, bogey_range, milesperpixel);
-        bogey_trace_->SetUIPosition(bogey_position);
-        bogey_trace_->Draw(sdl_renderer);
+            Coordinate bulls_start = bullseye_->GetPosition();
+            int bulls_bearing = tempBogey.GetBearing();
+            int aircraft_heading = -my_aircraft_->GetHeading();     // This was 0 in the original code
+            double bogey_range = static_cast<double>(tempBogey.GetRange());
+            double milesperpixel = GetMilesPerPixel();
 
+            Coordinate bogey_position = calc_endpoint_given_start_bearing_and_range(bulls_start, bulls_bearing, aircraft_heading, bogey_range, milesperpixel);
+            bogey_trace_->SetUIPosition(bogey_position);
+            bogey_trace_->Draw(sdl_renderer);
 
+            // Draw a short line from the center of the bogey in the direction the bogey is traveling. Try and keep it about the same length irrespective of HSD scale.
+            // The different range scale between centered and non centered means we need different starting sizes. 
+            double line_length;
 
-        // Draw a short line from the center of the bogey in the direction the bogey is traveling. Try and keep it about the same length irrespective of HSD scale.
-        // The different range scale between centered and non centered means we need different starting sizes. 
-        double line_length;
-        
-        if (GetCenteredState() == true) {
-            line_length = 0.3;
-        } else {
-            line_length = 0.2;
+            if (GetCenteredState() == true) {
+                line_length = 0.3;
+            }
+            else {
+                line_length = 0.2;
+            }
+
+            // % is used as the denominator as it's the minimum size so all larger sizes should be scaled as a multiple of 5.
+            line_length = line_length * (GetHSDCurrentRange() / 5.0);
+
+            Coordinate line_end_point = calc_endpoint_given_start_bearing_and_range(bogey_position, tempBogey.GetHeading(), -my_aircraft_->GetHeading(), line_length, GetMilesPerPixel());
+
+            SDL_SetRenderDrawColor(sdl_renderer, 255, 255, 255, 255);
+            SDL_RenderDrawLine(sdl_renderer, bogey_position.x, bogey_position.y, line_end_point.x, line_end_point.y);
         }
-
-        // % is used as the denominator as it's the minimum size so all larger sizes should be scaled as a multiple of 5.
-        line_length = line_length * (GetHSDCurrentRange() / 5.0);
-
-        Coordinate line_end_point = calc_endpoint_given_start_bearing_and_range(bogey_position, tempBogey.GetHeading(), -my_aircraft_->GetHeading(), line_length, GetMilesPerPixel());
-
-        SDL_SetRenderDrawColor(sdl_renderer, 255, 255, 255, 255);
-        SDL_RenderDrawLine(sdl_renderer, bogey_position.x, bogey_position.y, line_end_point.x, line_end_point.y);
-    }
+    //}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -510,9 +540,7 @@ void HSD::AddDynamicDataToDrawQueue(SDL_Renderer* sdl_renderer, const GameState&
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void HSD::AddGuessResultGraphicsToDrawQueue(SDL_Renderer* sdl_renderer, const GameState& game_state, const std::unique_ptr<RoundManager>& round_manager_, const std::unique_ptr<SettingsManager>& settings_manager_) {
-    // TODO 1: Implement AddGuessResultGraphicsToDrawQueue
 
-    // int user_bearing_guess = reciprocate_angle(angle_between_point_a_and_b(bullseye_->image_center_, mouse_click_position));
     int user_bearing_guess = 0;
 
     switch (settings_manager_->GetGameDifficulty()) {
@@ -524,12 +552,10 @@ void HSD::AddGuessResultGraphicsToDrawQueue(SDL_Renderer* sdl_renderer, const Ga
             if (game_state == GameState::kRoundWon) {
                 // User guessed the correct location within the total number of guesses allowed
                 DrawGuessArc(sdl_renderer, my_aircraft_->image_center_, user_bearing_guess, TRUE);
-                // set game state to kGameEnded
             }
-            else if (game_state == GameState::kRoundFail) {
+            else if (game_state == GameState::kRoundEnded) {
                 // User did NOT guess the correct location within the total number of guesses allowed so display the red arc, bullseye etc.
                 DrawGuessArc(sdl_renderer, my_aircraft_->image_center_, user_bearing_guess, FALSE);
-                // TODO: set game state to kGameEnded
             }
             else if (game_state == GameState::kRoundPlaying) {
                 // User guessed wrong position but they still have more guesses
@@ -543,11 +569,9 @@ void HSD::AddGuessResultGraphicsToDrawQueue(SDL_Renderer* sdl_renderer, const Ga
 
             if (game_state == GameState::kRoundWon) {
                 DrawGuessRect(sdl_renderer, TRUE);
-                // roundstate = RoundState::kEnded;
-            } else if (game_state == GameState::kRoundFail) {
+            } else if (game_state == GameState::kRoundEnded) {
                 // User did NOT guess the correct location within the total number of guesses allowed so display the red rectangle, bullseye etc.
                 DrawGuessRect(sdl_renderer, FALSE);
-                // TODO: set game state to kGameEnded
             }
             else if (game_state == GameState::kRoundPlaying) {
                 // User guessed wrong position but they still have more guesses
@@ -561,12 +585,10 @@ void HSD::AddGuessResultGraphicsToDrawQueue(SDL_Renderer* sdl_renderer, const Ga
             user_bearing_guess = angle_between_point_a_and_b(bullseye_->image_center_, g_mouse_click_pos);
             if (game_state == GameState::kRoundWon) {
                 DrawGuessArc(sdl_renderer, bullseye_->image_center_, user_bearing_guess, TRUE);
-                // roundstate = RoundState::kEnded;
             }
-            else if (game_state == GameState::kRoundFail) {
+            else if (game_state == GameState::kRoundEnded) {
                 // User did NOT guess the correct location within the total number of guesses allowed so display the red arc, bullseye etc.
                 DrawGuessArc(sdl_renderer, bullseye_->image_center_, user_bearing_guess, FALSE);
-                // TODO: set game state to kGameEnded
             }
             else if (game_state == GameState::kRoundPlaying) {
                 // User guessed wrong position but they still have more guesses
@@ -580,12 +602,10 @@ void HSD::AddGuessResultGraphicsToDrawQueue(SDL_Renderer* sdl_renderer, const Ga
             user_bearing_guess = angle_between_point_a_and_b(bullseye_->image_center_, g_mouse_click_pos);
             if (game_state == GameState::kRoundWon) {
                 DrawGuessRect(sdl_renderer, TRUE);
-                // roundstate = RoundState::kEnded;
             }
-            else if (game_state == GameState::kRoundFail) {
+            else if (game_state == GameState::kRoundEnded) {
                 // User did NOT guess the correct location within the total number of guesses allowed so display the red arc, bullseye etc.
                 DrawGuessRect(sdl_renderer, FALSE);
-                // TODO: set game state to kGameEnded
             }
             else if (game_state == GameState::kRoundPlaying) {
                 // User guessed wrong position but they still have more guesses
@@ -611,7 +631,7 @@ void HSD::Draw(SDL_Renderer* sdl_renderer, const std::unique_ptr<RoundManager>& 
     PLOG_VERBOSE << "HSD::Draw(std::unique_ptr<EnemyManager>& enemy_manager_) called";
     
     // Draws all the static objects using their current states (ranges, angles etc)
-    // Need to draw arc/rect first so you can see the aircraft, rings, bulls etc.
+    // Need to draw arc/rect first so you can see the aircraft, rings, bulls etc. on top of it.
     AddGuessResultGraphicsToDrawQueue(sdl_renderer, game_state, round_manager_, settings_manager_);  
     AddStaticUIElementsToDrawQueue(sdl_renderer, game_state, round_manager_);
     AddPanelTextToDrawQueue(sdl_renderer, game_state, round_manager_, settings_manager_);

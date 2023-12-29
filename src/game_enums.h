@@ -30,7 +30,7 @@ namespace cpv {
 		kRoundWon,
 		// User failed to guess the correct location after the predefined number of attempts.
 		// Round is over so can display the hidden bogies on the HSD.
-		kRoundFail,
+		kRoundEnded,
 		// Used to signal that the user wants to quit the game
 		kGameEnded
 	};

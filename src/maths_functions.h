@@ -61,7 +61,9 @@ namespace cpv {
 			theta += kTwoPi;
 		}
 
-		return static_cast<int>(kRad2Deg * theta);
+		int angle = static_cast<int>(kRad2Deg * theta);
+		
+		return angle;
 	}
 
 

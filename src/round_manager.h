@@ -52,12 +52,11 @@ namespace cpv {
 
 	// Methods
 	protected:
-		void CheckRecruitWinStatus(GameState& state, Coordinate aircraft_position, int aircraft_heading, int bulls_bearing);
+		void CheckRecruitWinStatus(GameState& state, Coordinate aircraft_position, int aircraft_heading, int bulls_bearing, Coordinate bullseye_position);
 		void CheckCadetWinStatus(GameState& state, Coordinate bullseye_position);
 		void CheckRookieWinStatus(GameState& state, int aircraft_heading, Coordinate bullseye_position);
 		void CheckVeteranWinStatus(GameState& state, Coordinate bullseye_position, int bulls_bearing, int aircraft_heading, double milesperpixel);
 		void CheckAceWinStatus(GameState& state);
-		bool IsClickInRectAroundBulls();
 		void IncreaseGuessCount();
 
 
@@ -69,7 +68,7 @@ namespace cpv {
 
 		void CheckGuessAgainstWinCondition(GameState& state, const std::unique_ptr<SettingsManager>& settings_manager, Coordinate bullseye_position, int bulls_bearing, Coordinate aircraft_position, int aircraft_heading, double milesperpixel);
 		int GetRemainingGuesses() const;
-		void ResetRound();
+		//void ResetRound();
 		std::string GenerateAwacsCallString(int bogey_index);
 	};
 

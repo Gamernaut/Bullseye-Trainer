@@ -223,8 +223,10 @@ namespace cpv {
 		////////////////////////////////////////
 
 			// These images are used to show whether the player has guessed correctly or not depending on difficulty level
-			inline const char* kGreenPieSlice = "./assets/images/green_pie_slice_165x684.png";
-			inline const char* kRedPieSlice = "./assets/images/red_pie_slice_165x684.png";
+			//inline const char* kGreenPieSlice = "./assets/images/green_pie_slice_165x684.png";
+			//inline const char* kRedPieSlice = "./assets/images/red_pie_slice_165x684.png";
+			inline const char* kGreenPieSlice = "./assets/images/green_rectangle_50x800.png";
+			inline const char* kRedPieSlice = "./assets/images/red_rectangle_50x798.png";
 			inline const char* kRedRectangle = "./assets/images/red_rectangle_64x64.png";
 			inline const char* kGreenRectangle = "./assets/images/green_rectangle_64x64.png";
 
@@ -339,6 +341,12 @@ namespace cpv {
 				// Bearing to bullseye Text
 				inline const char* kBearingText = "000";
 
+				// The following are the areas that have to overlap with the target for a guess to be correct.
+				// They are used to draw the rectangles and lines and to detect an overlap with the bullseye/bogey etc.
+				inline const int kRectangleWidth = 60;
+				inline const int kRectangleHeight = 60;
+				inline const int kPieSliceWidth = 50;
+				inline const int kPieSliceHeight = 300;
 }
 
 #endif  // CPV_CONFIG_H_

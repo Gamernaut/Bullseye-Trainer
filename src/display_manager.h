@@ -53,6 +53,7 @@ namespace cpv {
         bool InitialiseSDL();
         bool CreateScreens();
         void CloseDown();
+        void DrawRoundOverMessage();
     protected:
 
     private:
